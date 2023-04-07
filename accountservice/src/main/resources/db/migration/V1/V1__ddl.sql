@@ -1,6 +1,6 @@
 CREATE TABLE shop_user
 (
-    id IDENTITY PRIMARY KEY,
+    id       IDENTITY PRIMARY KEY,
     username VARCHAR(100) NOT NULL,
     password VARCHAR(100) NOT NULL,
     email    VARCHAR(100) NOT NULL
