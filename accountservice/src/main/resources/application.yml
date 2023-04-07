@@ -1,3 +1,25 @@
+spring:
+  flyway:
+    enabled: 'true'
+    baseline-on-migrate: 'true'
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    url: ${spring.datasource.url}
+  datasource:
+    driverClassName: org.h2.Driver
+    password: account_x
+    username: account_x
+    url: jdbc:h2:file:~/account_DB
+  h2:
+    console:
+      path: /h2-console
+      enabled: 'true'
+  jpa:
+    defer-datasource-initialization: 'false'
+    hibernate:
+      ddl-auto: none
+    show-sql: 'true'
+    database-platform: org.hibernate.dialect.H2Dialect
 server:
   servlet:
     context-path: /api
