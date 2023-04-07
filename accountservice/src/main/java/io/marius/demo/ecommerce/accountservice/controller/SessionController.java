@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("sessions/")
+@RequestMapping("sessions")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SessionController {
@@ -19,6 +19,7 @@ public class SessionController {
     return authorizationService.login(payload);
   }
 
+  //  Should be not accessible through SecurityFilterChain
   @GetMapping("test")
   String test() {
     return "OK";
