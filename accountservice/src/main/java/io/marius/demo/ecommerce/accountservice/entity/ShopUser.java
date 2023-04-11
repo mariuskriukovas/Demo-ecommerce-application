@@ -37,6 +37,7 @@ public class ShopUser implements UserDetails {
   public Collection<? extends GrantedAuthority> getAuthorities() {
     List<GrantedAuthority> authorities = new ArrayList<>();
 
+    // Todo implement authorities
     authorities.add(new SimpleGrantedAuthority(UserRole.USER.name()));
     return authorities;
   }
