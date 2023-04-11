@@ -1,0 +1,15 @@
+### Autentificated
+POST localhost:9000/api/sessions/login
+Content-Type: application/json
+
+{
+    "username": "userB",
+    "password": "userB_pass"
+}
+
+### Not autentificated
+GET localhost:9000/api/sessions/test
+
+### Autentificated
+GET localhost:9000/api/sessions/test
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJNYXJpdXMiLCJzdWIiOiIyLHVzZXJCIiwiZXhwIjoxNjgxMjUzMzc4LCJpYXQiOjE2ODEyMTczNzgsInJvbGVzIjoiVVNFUiJ9.aV-T0C5qyrlwDyXY3ZiuLCFzo0Y3x30IC-T354UeEun56UpBz60WnrJCQXUi_8DyA_v0Z6DLqykKl9lTzHh-eLaG5GOMo4V6664pjIkHhiAImOYorMKGISMCEeidXDwsETXivi1M8kFMryRxRnqWB60449muKVeFLduCPMfWHzsw3mBY94x3PHbo7n5JP68Od8HSVOEMmD9zasRzREh2QGTedOUZgrvxCOCzJYlHGV7cslZ44di8NV-W-vl7Dv8UUd7KaLJa1Mh7wSzFi-8TR95s8wVvE07awiZZ0exvCENkRQ4clz5T_VJbHUP-WfH_UjFfW-w9USq1tR-fiUtpjWzKof872e4a-g7jafcWFpz3iI6J-8STVT5INS8yU9AAa6M1VhfzJN9akcTV99HMsH-xyZ0ACsmb1lU2T29BA6uV7cVTuFHNx4AT6QaKeCNAH_WdCggbGD53YzmE66d_vCCi-fdujGWJwQDGcEZrIv0zmBICEX8MWfz-mImq1W3fq5Rt3ZKWqN8ezTdbxWay2mTEeXn9-7ii3Pw8yvEDvV2Cdd_rtewaK20NWvPkzkddrDiu6FV4F--dXFwuJmTSVodSRYbaAY2z6VYCo5WdoND5Pp8ixdxpurOYBcm8hNT6sSMFn0rcQOlnVa-1bJOzCYe9JgFBX4ycKYJ3-R3RNig

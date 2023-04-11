@@ -5,6 +5,7 @@ import io.marius.demo.ecommerce.accountservice.service.AuthorizationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,11 +16,10 @@ public class SessionController {
   AuthorizationService authorizationService;
 
   @PostMapping("login")
-  String login(@RequestBody LoginPayload payload) {
+  ResponseEntity<String> login(@RequestBody LoginPayload payload) {
     return authorizationService.login(payload);
   }
 
-  //  Should be not accessible through SecurityFilterChain
   @GetMapping("test")
   String test() {
     return "OK";
