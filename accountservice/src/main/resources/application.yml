@@ -24,3 +24,21 @@ server:
   servlet:
     context-path: /api
   port: '9000'
+
+jwt:
+  claims:
+    custom:
+      issuer: Marius
+      expiry: 36000
+  public:
+    key: classpath:rsa.public.key
+  private:
+    key: classpath:rsa.private.key
+
+
+logging:
+  level:
+    org:
+      hibernate: ERROR
+      springframework:
+        web: DEBUG
