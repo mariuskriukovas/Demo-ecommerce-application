@@ -17,6 +17,7 @@
 	<modules>
 		<module>persistence</module>
 		<module>api</module>
+		<module>validation</module>
 	</modules>
 	<properties>
 		<java.version>17</java.version>
