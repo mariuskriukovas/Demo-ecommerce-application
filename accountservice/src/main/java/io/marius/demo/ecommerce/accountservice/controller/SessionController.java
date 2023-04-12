@@ -2,12 +2,13 @@ package io.marius.demo.ecommerce.accountservice.controller;
 
 import io.marius.demo.ecommerce.accountservice.model.payload.LoginPayload;
 import io.marius.demo.ecommerce.accountservice.service.AuthorizationService;
+import io.marius.demo.ecommerce.persistence.api.controller.BaseController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("sessions")
-public class SessionController {
+public class SessionController extends BaseController {
   private final AuthorizationService authorizationService;
 
   public SessionController(AuthorizationService authorizationService) {
@@ -17,10 +18,5 @@ public class SessionController {
   @PostMapping("login")
   ResponseEntity<String> login(@RequestBody LoginPayload payload) {
     return authorizationService.login(payload);
-  }
-
-  @GetMapping("test")
-  String test() {
-    return "OK";
   }
 }
