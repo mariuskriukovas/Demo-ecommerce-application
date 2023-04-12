@@ -7,7 +7,6 @@ import io.marius.demo.ecommerce.accountservice.entity.ShopUser;
 import io.marius.demo.ecommerce.accountservice.model.payload.LoginPayload;
 import io.marius.demo.ecommerce.accountservice.service.AuthorizationService;
 import java.time.Instant;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("AuthorizationService")
-@RequiredArgsConstructor
 public class AuthorizationServiceImpl implements AuthorizationService {
   private final AuthenticationManager authenticationManager;
   private final JwtEncoder jwtEncoder;
@@ -34,6 +32,12 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
   @Value("${jwt.claims.custom.expiry}")
   private String jwtExpiry;
+
+  public AuthorizationServiceImpl(
+      AuthenticationManager authenticationManager, JwtEncoder jwtEncoder) {
+    this.authenticationManager = authenticationManager;
+    this.jwtEncoder = jwtEncoder;
+  }
 
   @Override
   @Transactional(readOnly = true)

@@ -9,7 +9,6 @@ import com.nimbusds.jose.proc.SecurityContext;
 import io.marius.demo.ecommerce.accountservice.security.service.UserService;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +33,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
-@RequiredArgsConstructor
 public class SecurityConfig {
   private final UserService userService;
 
@@ -43,6 +41,10 @@ public class SecurityConfig {
 
   @Value("${jwt.private.key}")
   private RSAPrivateKey rsaPrivateKey;
+
+  public SecurityConfig(UserService userService) {
+    this.userService = userService;
+  }
 
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

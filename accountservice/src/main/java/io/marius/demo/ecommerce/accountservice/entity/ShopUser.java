@@ -1,28 +1,18 @@
 package io.marius.demo.ecommerce.accountservice.entity;
 
 import io.marius.demo.ecommerce.accountservice.security.enums.UserRole;
+import io.marius.demo.ecommerce.persistence.entity.BaseEntity;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "shop_user")
-@SuperBuilder
-@NoArgsConstructor
-@Getter
-@Setter
-public class ShopUser implements UserDetails {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+public class ShopUser extends BaseEntity implements UserDetails {
 
   @Column(name = "username", length = 100)
   private String username;
@@ -32,6 +22,32 @@ public class ShopUser implements UserDetails {
 
   @Column(name = "email", length = 100)
   private String email;
+
+  @Override
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  @Override
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
