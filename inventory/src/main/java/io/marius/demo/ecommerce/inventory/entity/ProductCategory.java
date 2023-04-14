@@ -10,4 +10,12 @@ import jakarta.persistence.Table;
 public class ProductCategory extends BaseEntity {
     @Column(name = "name", length = 100)
     private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

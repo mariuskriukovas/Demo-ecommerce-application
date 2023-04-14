@@ -3,6 +3,8 @@ package io.marius.demo.ecommerce.inventory.entity;
 import io.marius.demo.ecommerce.persistence.entity.BaseEntity;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "product")
 public class Product extends BaseEntity {
@@ -18,6 +20,10 @@ public class Product extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private ProductCategory productCategory;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductProperty> properties;
+
 
     public String getName() {
         return name;
@@ -49,5 +55,13 @@ public class Product extends BaseEntity {
 
     public void setProductCategory(ProductCategory productCategory) {
         this.productCategory = productCategory;
+    }
+
+    public List<ProductProperty> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(List<ProductProperty> properties) {
+        this.properties = properties;
     }
 }

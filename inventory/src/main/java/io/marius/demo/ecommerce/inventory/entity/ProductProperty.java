@@ -9,10 +9,34 @@ public class ProductProperty extends BaseEntity {
     @Column(name = "name", length = 100)
     private String name;
 
-    @Column(name = "price", length = 1000)
+    @Column(name = "description", length = 1000)
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 }

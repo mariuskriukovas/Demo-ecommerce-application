@@ -26,6 +26,9 @@ spring:
       ddl-auto: none
     show-sql: 'true'
     database-platform: org.hibernate.dialect.H2Dialect
+  graphql:
+    graphiql:
+      enabled: true
 server:
   servlet:
     context-path: /api

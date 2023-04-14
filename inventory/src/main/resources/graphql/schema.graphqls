@@ -1,0 +1,30 @@
+type Product{
+    id: Int!
+    name: String!
+    price: Float
+    description: String
+    productCategory: ProductCategory
+    properties: [ProductProperty]
+}
+
+type ProductCategory{
+    id: Int!
+    name: String!
+}
+
+type ProductProperty{
+    id: Int!
+    name: String!
+    description: String!
+    product: Product
+}
+
+type InventoryItem{
+    id: Int!
+    quantity: String!
+    product: Product
+}
+
+type Query{
+    product(id:Int!): Product
+}
