@@ -2,25 +2,22 @@ package io.marius.demo.ecommerce.accountservice.controller;
 
 import io.marius.demo.ecommerce.accountservice.model.payload.LoginPayload;
 import io.marius.demo.ecommerce.accountservice.service.AuthorizationService;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
+import io.marius.demo.ecommerce.persistence.api.controller.BaseController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("sessions/")
-@RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class SessionController {
-  AuthorizationService authorizationService;
+@RequestMapping("sessions")
+public class SessionController extends BaseController {
+  private final AuthorizationService authorizationService;
 
-  @PostMapping("login")
-  String login(@RequestBody LoginPayload payload) {
-    return authorizationService.login(payload);
+  public SessionController(AuthorizationService authorizationService) {
+    this.authorizationService = authorizationService;
   }
 
-  @GetMapping("test")
-  String test() {
-    return "OK";
+  @PostMapping("login")
+  ResponseEntity<String> login(@Validated @RequestBody LoginPayload payload) {
+    return authorizationService.login(payload);
   }
 }
