@@ -22,18 +22,10 @@ public class InventoryItemServiceImpl implements InventoryItemService {
     @Override
     @Transactional(readOnly = true)
     public Page<InventoryItemView> getAllInventoryItems() {
-        return new PageImpl<>(
-                inventoryItemRepository.findAll().stream()
-                        .map(this::toInventoryItemView)
-                        .collect(Collectors.toList()));
+        return new PageImpl<>(inventoryItemRepository.findAll().stream().map(this::toInventoryItemView).collect(Collectors.toList()));
     }
 
     private InventoryItemView toInventoryItemView(InventoryItem item) {
-        return InventoryItemView.InventoryItemViewBuilder.anInventoryItemView()
-                .id(item.getId())
-                .name(item.getName())
-                .quantity(item.getQuantity())
-                .price(item.getPrice())
-                .build();
+        return InventoryItemView.InventoryItemViewBuilder.anInventoryItemView().id(item.getId()).name(item.getProduct().getName()).quantity(item.getQuantity()).price(item.getProduct().getPrice()).build();
     }
 }
