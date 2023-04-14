@@ -54,7 +54,12 @@ public class SecurityConfig {
 
     http.authorizeHttpRequests(
             (auth) ->
-                auth.requestMatchers("sessions/login").permitAll().anyRequest().authenticated())
+                auth.requestMatchers("sessions/login")
+                    .permitAll()
+                    .requestMatchers(".well-known/jwks.json")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated())
         .httpBasic(withDefaults());
 
     http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);

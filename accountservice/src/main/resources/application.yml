@@ -42,3 +42,4 @@ logging:
       hibernate: ERROR
       springframework:
         web: DEBUG
+        security: DEBUG
