@@ -2,14 +2,17 @@ package io.marius.demo.ecommerce.inventory.service;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.marius.demo.ecommerce.inventory.entity.Product;
+import io.marius.demo.ecommerce.inventory.entity.*;
 import io.marius.demo.ecommerce.inventory.entity.QProduct;
 import io.marius.demo.ecommerce.inventory.entity.QProductProperty;
+import io.marius.demo.ecommerce.inventory.mapper.ProductMapper;
+import io.marius.demo.ecommerce.inventory.model.payload.ProductInput;
 import io.marius.demo.ecommerce.inventory.model.query.ProductFilter;
 import io.marius.demo.ecommerce.inventory.model.query.PropertyFilter;
+import io.marius.demo.ecommerce.inventory.repository.ProductCategoryRepository;
 import io.marius.demo.ecommerce.inventory.repository.ProductRepository;
-import io.marius.demo.ecommerce.inventory.repository.PropertyRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.validation.ValidationException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -19,16 +22,49 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("ProductService")
 public class ProductService {
   private final ProductRepository productRepository;
-  private final PropertyRepository propertyRepository;
+  private final ProductCategoryRepository productCategoryRepository;
   private final JPAQueryFactory queryFactory;
+  private final ProductMapper productMapper;
 
   public ProductService(
       ProductRepository productRepository,
-      PropertyRepository propertyRepository,
-      EntityManager entityManager) {
+      ProductCategoryRepository productCategoryRepository,
+      EntityManager entityManager,
+      ProductMapper productMapper) {
     this.productRepository = productRepository;
-    this.propertyRepository = propertyRepository;
+    this.productCategoryRepository = productCategoryRepository;
     this.queryFactory = new JPAQueryFactory(entityManager);
+    this.productMapper = productMapper;
+  }
+
+  @Transactional
+  public String createProduct(ProductInput productInput) {
+    ProductCategory category =
+        productCategoryRepository
+            .findByName(productInput.getProductCategory())
+            .orElseThrow(() -> new ValidationException("Product category not found"));
+
+    Product product = null;
+
+    if (productInput.getId() != null) {
+      product = productRepository.findById(productInput.getId()).orElse(null);
+      if (product != null) {
+        productMapper.update(product, productInput);
+      }
+    }
+
+    if (product == null) {
+      product = productMapper.toProductEntity(productInput);
+    }
+
+    product.setProductCategory(category);
+
+    for (ProductProperty property : product.getProperties()) {
+      property.setProduct(product);
+    }
+
+    product = productRepository.save(product);
+    return String.format("Successfully saved product with id: %d", product.getId());
   }
 
   @Transactional(readOnly = true)
