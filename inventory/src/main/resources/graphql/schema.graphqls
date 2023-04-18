@@ -1,3 +1,4 @@
+# Schema
 type Product{
     id: Int!
     name: String!
@@ -25,6 +26,8 @@ type InventoryItem{
     product: Product
 }
 
+# Filters
+
 input PropertyFilter {
     name: String
     description: String
@@ -42,4 +45,24 @@ input ProductFilter {
 type Query{
     product(id:Int!): Product
     allProducts(filter: ProductFilter!): [Product]
+}
+
+# Mutation
+
+input ProductInput{
+    id: Int
+    name: String!
+    price: Float
+    description: String
+    productCategory: String
+    properties: [PropertyInput]
+}
+input PropertyInput{
+    id: Int
+    name: String!
+    description: String
+}
+
+type Mutation{
+    createProduct(product: ProductInput):String
 }
