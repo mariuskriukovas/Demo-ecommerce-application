@@ -61,7 +61,7 @@ public class ProductService {
               filter.getPriceTo() == null ? Double.MAX_VALUE : filter.getPriceTo()));
     }
 
-    if (!filter.getProperties().isEmpty()) {
+    if (isValidFilter(filter.getProperties())) {
       BooleanBuilder propertyQueryBuilder = new BooleanBuilder();
       QProductProperty productProperty = QProductProperty.productProperty;
 
@@ -92,5 +92,9 @@ public class ProductService {
 
   private boolean isValidFilter(String filter) {
     return filter != null && !filter.isEmpty() && !filter.trim().isEmpty();
+  }
+
+  private <T> boolean isValidFilter(List<T> filter) {
+    return filter != null && !filter.isEmpty();
   }
 }

@@ -34,7 +34,8 @@ input ProductFilter {
     name: String
     description: String
     category: String
-    price: Float
+    priceFrom: Float
+    priceTo: Float
     properties: [PropertyFilter]
 }
 
