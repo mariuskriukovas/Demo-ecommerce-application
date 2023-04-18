@@ -7,25 +7,25 @@ CREATE TABLE product_category
 CREATE TABLE product
 (
     id IDENTITY PRIMARY KEY,
-    name        VARCHAR(100)  NOT NULL,
-    price       DOUBLE        NOT NULL,
-    description VARCHAR(2000) NOT NULL,
-    category_id INT
+    name        VARCHAR(100) NOT NULL,
+    price       DOUBLE       NOT NULL,
+    description VARCHAR(2000),
+    category_id INT          NOT NULL
 );
 
 CREATE TABLE product_property
 (
     id IDENTITY PRIMARY KEY,
-    name        VARCHAR(100)  NOT NULL,
-    description VARCHAR(1000) NOT NULL,
-    product_id  INT
+    name        VARCHAR(100) NOT NULL,
+    description VARCHAR(1000),
+    product_id  INT          NOT NULL
 );
 
 CREATE TABLE inventory_item
 (
     id IDENTITY PRIMARY KEY,
     quantity   INT NOT NULL,
-    product_id INT
+    product_id INT NOT NULL
 );
 
 
