@@ -17,7 +17,7 @@ import io.marius.demo.ecommerce.inventory.service.predicates.ProductPredicate;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.ValidationException;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,8 +73,10 @@ public class ProductService {
   }
 
   @Transactional(readOnly = true)
-  public Optional<Product> findProduct(Long id) {
-    return productRepository.findById(id);
+  public Product findProduct(Long id) {
+    return productRepository
+        .findById(id)
+        .orElseThrow(() -> new NoSuchElementException("Product not found"));
   }
 
   @Transactional(readOnly = true)

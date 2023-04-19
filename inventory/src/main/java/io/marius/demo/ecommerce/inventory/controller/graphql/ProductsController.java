@@ -20,7 +20,7 @@ public class ProductsController {
   }
 
   @QueryMapping(value = "product")
-  public Optional<Product> getProduct(@Argument(name = "id") Long id) {
+  public Product getProduct(@Argument(name = "id") Long id) {
     return productService.findProduct(id);
   }
 

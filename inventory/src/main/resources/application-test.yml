@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driverClassName: org.h2.Driver
+    password: inventory_test_x
+    username: inventory_test_x
+    url: jdbc:h2:file:~/inventory_test_DB;
+  flyway:
+    cleanDisabled: false
+    enabled: 'true'
+    baseline-on-migrate: 'true'
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    url: ${spring.datasource.url}
+  h2:
+    console:
+      path: /h2-console
+      enabled: 'true'
+  jpa:
+    defer-datasource-initialization: 'false'
+    hibernate:
+      ddl-auto: none
+    show-sql: 'true'
+    database-platform: org.hibernate.dialect.H2Dialect
+  graphql:
+    graphiql:
+      enabled: true
