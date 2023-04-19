@@ -10,13 +10,12 @@ import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 
 @Controller
-public class ProductsGraphQLController {
+public class ProductsController {
   private final ProductService productService;
 
-  public ProductsGraphQLController(ProductService productService) {
+  public ProductsController(ProductService productService) {
     this.productService = productService;
   }
 
@@ -26,7 +25,6 @@ public class ProductsGraphQLController {
   }
 
   @QueryMapping(value = "allProducts")
-  @Transactional(readOnly = true)
   public List<Product> getAllProducts(@Argument(name = "filter") ProductFilter filter) {
     return productService.findAllProducts(filter);
   }

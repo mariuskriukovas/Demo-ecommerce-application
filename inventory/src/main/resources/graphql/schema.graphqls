@@ -1,4 +1,10 @@
 # Schema
+type InventoryItem{
+    id: Int!
+    quantity: String!
+    product: Product
+}
+
 type Product{
     id: Int!
     name: String!
@@ -20,12 +26,6 @@ type ProductProperty{
     product: Product
 }
 
-type InventoryItem{
-    id: Int!
-    quantity: String!
-    product: Product
-}
-
 # Filters
 
 input PropertyFilter {
@@ -42,9 +42,16 @@ input ProductFilter {
     properties: [PropertyFilter]
 }
 
+input InventoryItemsFilter {
+    quantityFrom: Int
+    quantityTo: Int
+    productFilter: ProductFilter
+}
+
 type Query{
     product(id:Int!): Product
     allProducts(filter: ProductFilter!): [Product]
+    allInventoryItems(filter: InventoryItemsFilter!): [InventoryItem]
 }
 
 # Mutation
