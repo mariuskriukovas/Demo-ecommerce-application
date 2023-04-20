@@ -64,8 +64,10 @@ public class ProductService {
 
     product.setProductCategory(category);
 
-    for (ProductProperty property : product.getProperties()) {
-      property.setProduct(product);
+    if (product.getProperties() != null) {
+      for (ProductProperty property : product.getProperties()) {
+        property.setProduct(product);
+      }
     }
 
     product = productRepository.save(product);

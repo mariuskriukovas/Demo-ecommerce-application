@@ -1,7 +1,6 @@
 package io.marius.demo.ecommerce.inventory;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import io.marius.demo.ecommerce.inventory.entity.Product;
 import io.marius.demo.ecommerce.inventory.entity.ProductProperty;
@@ -19,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
@@ -111,5 +111,26 @@ class ProductServiceTest {
     String msg = productService.createProduct(input);
 
     assertEquals("Successfully saved product with id: 10", msg);
+  }
+
+  @Test
+  void shouldThrowExceptionWhenNotValidProductDataIsProvided() {
+
+    ProductInput input = new ProductInput();
+
+    input.setName("Apple MacBook Air (M2)");
+    input.setPrice(1100.99);
+    input.setDescription(
+        "The latest MacBook Air, powered by Apple’s M2 processor, is the best laptop for most people.");
+    input.setProductCategory("Laptop");
+
+    DataIntegrityViolationException exception = null;
+    try {
+      productService.createProduct(input);
+    } catch (DataIntegrityViolationException e) {
+      exception = e;
+    }
+
+    assertNotNull(exception);
   }
 }
