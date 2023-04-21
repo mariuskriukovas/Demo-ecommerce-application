@@ -8,7 +8,7 @@ export const useAppStore = defineStore('app', {
     },
   }), getters: {
     isAuthenticated(state) {
-      return state.auth?.isAuthenticated
+      return state.auth?.isAuthenticated === true
     }, getAuthHeader(state) {
       return state.auth?.authenticatedHeader
     },
@@ -24,14 +24,14 @@ export const useAppStore = defineStore('app', {
           this.auth.authenticatedHeader = headers.get("authorization");
         }
       } catch (error) {
-        console.log(error)
+        console.error(error)
+        throw error
       }
-    }
-  }, mutations: {
-    setAuthenticationFlag(state, flag) {
-      state.auth.isAuthenticated = flag;
-    }, setAuthenticationHeader(state, header) {
-      state.auth.authenticatedHeader = header;
     },
+    logout() {
+      // Todo add BE call
+      this.auth.isAuthenticated = false
+      this.auth.authenticatedHeader = null
+    }
   },
 })

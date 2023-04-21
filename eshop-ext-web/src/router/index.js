@@ -1,5 +1,9 @@
-// Composables
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
+import Inventory from "@/views/tabs/Inventory.vue";
+import Products from "@/views/tabs/Product.vue";
+import HomeTabs from "@/views/Home.vue";
+import Login from "@/views/Login.vue";
+import {useAppStore} from '@/store/app'
 
 const routes = [
   {
@@ -7,13 +11,27 @@ const routes = [
     component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
-        path: '',
-        name: 'Home',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
+        path: "/",
+        name: Login.name,
+        component: Login,
       },
+      {
+        path: "/home",
+        name: HomeTabs.name,
+        component: HomeTabs,
+        children: [
+          {
+            path: "",
+            name: Inventory.name,
+            component: Inventory
+          },
+          {
+            path: "products",
+            name: Products.name,
+            component: Products
+          }
+        ]
+      }
     ],
   },
 ]
@@ -21,6 +39,14 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+})
+router.beforeEach((to, from, next) => {
+  const store = useAppStore()
+  if (to.name !== Login.name && !store.isAuthenticated) {
+    next({name: Login.name})
+  } else {
+    next()
+  }
 })
 
 export default router
