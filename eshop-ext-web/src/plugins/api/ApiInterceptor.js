@@ -1,11 +1,19 @@
 import axios from "axios";
 
 export default (basePath) => {
-  const instance = axios.create({
-    baseURL: `/${basePath}`, withCredentials: false, headers: {
-      Accept: "application/json", "Content-Type": "application/json",
-    },
-  });
+  // Todo improve latter
+  const appStorage = JSON.parse(sessionStorage.getItem('app'))
+  const authenticatedHeader = appStorage?.auth?.authenticatedHeader ?? null
 
-  return instance;
+  const headers = {
+    Accept: "application/json", "Content-Type": "application/json",
+  }
+
+  if (authenticatedHeader) {
+    headers['Authorization'] = authenticatedHeader
+  }
+
+  return axios.create({
+    baseURL: `/${basePath}`, withCredentials: false, headers,
+  });
 };

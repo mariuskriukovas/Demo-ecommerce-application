@@ -45,6 +45,13 @@ export default defineConfig({
         changeOrigin: true,
         logLevel: 'debug',
       },
+      '^/inventory': {
+        target: 'http://localhost:9001',
+        rewrite: path => path.replace(/^\/inventory/, 'api'),
+        secure: false,
+        changeOrigin: true,
+        logLevel: 'debug',
+      },
     },
   },
 })

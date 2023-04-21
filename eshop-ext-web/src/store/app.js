@@ -27,11 +27,12 @@ export const useAppStore = defineStore('app', {
         console.error(error)
         throw error
       }
-    },
-    logout() {
+    }, logout() {
       // Todo add BE call
       this.auth.isAuthenticated = false
       this.auth.authenticatedHeader = null
     }
-  },
+  }, persist: {
+    enabled: true
+  }
 })
