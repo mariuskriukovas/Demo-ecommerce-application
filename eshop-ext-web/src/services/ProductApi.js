@@ -1,4 +1,7 @@
 import ApiInterceptor from "@/plugins/api/ApiInterceptor";
+import * as gql from 'gql-query-builder'
+import {omitBy} from "lodash";
+
 
 const api = ApiInterceptor("inventory");
 
@@ -8,23 +11,22 @@ export default {
       query: query,
     }))?.data
   }, async getProductsByFilterQuery(filter) {
+    const validFilters = omitBy(filter, v => v == null || !v?.length)
 
-    // todo implement full query later
-    const query = `
-      query{
-    allProducts(filter: { name: "${filter?.name}" })
-  {
-        id
-        name
-        price
-        description
-        productCategory { id name }
-        properties { id name description }
-    }
-}
-    `
-    return (await api.post("graphql", {
-      query,
-    }))?.data
+    const query = gql.query([{
+      operation: "allProducts",
+      fields: ["id", "name", "price", "description", {
+        productCategory: ["id", "name"],
+        properties: ["id", "name", "description"]
+      }],
+      variables: {
+        filter: {
+          name: "filter",
+          type: "ProductFilter!",
+          value: validFilters,
+        },
+      },
+    },]);
+    return (await api.post("graphql", query))?.data
   },
 };
