@@ -2,7 +2,7 @@
   <v-container class="fill-height">
     <v-responsive class="d-flex align-center text-center fill-height">
       <v-row class="d-flex align-center justify-center">
-        <v-card title="Login" width="400" style="border: 5px solid #1867C0;">
+        <v-card style="border: 5px solid #1867C0;" title="Login" width="400">
           <v-form fast-fail @submit.prevent="onLogin">
             <v-col cols="auto">
               <v-text-field v-model="username" label="User Name"></v-text-field>
@@ -27,14 +27,12 @@
 
 <script>
 import {useAppStore} from "@/store/app";
-import {mapActions, mapStores} from "pinia";
+import {mapActions} from "pinia";
 import router from "@/router";
 
 export default {
   name: 'LoginView',
-  computed: {
-    ...mapStores(useAppStore),
-  },
+  computed: {},
   data() {
     return {
       username: 'userA',
@@ -46,7 +44,7 @@ export default {
 
     async onLogin() {
       await this.login(this.$data)
-      await router.push({ path: 'home' })
+      await router.push({path: 'home'})
     },
   },
 }
