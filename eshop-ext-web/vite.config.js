@@ -39,14 +39,14 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '^/accounts': {
-        target: 'http://localhost:9000',
+        target: 'http://auth-server:9000',
         rewrite: path => path.replace(/^\/accounts/, 'api'),
         secure: false,
         changeOrigin: true,
         logLevel: 'debug',
       },
       '^/inventory': {
-        target: 'http://localhost:9001',
+        target: 'http://inventory-server:9001',
         rewrite: path => path.replace(/^\/inventory/, 'api'),
         secure: false,
         changeOrigin: true,
