@@ -11,23 +11,33 @@ spring:
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
     url: ${spring.datasource.url}
+    schemas: inventory
   datasource:
-    driverClassName: org.h2.Driver
+    hikari:
+      max-lifetime: 600000
+      idle-timeout: 600000
+    driverClassName: org.postgresql.Driver
     password: inventory_x
     username: inventory_x
-    url: jdbc:h2:file:~/inventory_DB
+    url: jdbc:postgresql://XXXXXXXX/postgres
   h2:
     console:
       path: /h2-console
       enabled: 'true'
   jpa:
-    defer-datasource-initialization: 'false'
     hibernate:
       ddl-auto: none
     show-sql: 'true'
-    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        default_schema: inventory
   graphql:
     graphiql:
+      enabled: true
+  servlet:
+    multipart:
+      max-request-size: 1280KB
+      max-file-size: 1280KB
       enabled: true
 server:
   servlet:

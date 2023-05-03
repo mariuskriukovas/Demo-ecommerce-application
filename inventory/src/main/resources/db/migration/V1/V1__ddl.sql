@@ -1,51 +1,33 @@
-CREATE TABLE product_category
+CREATE TABLE inventory.product_category
 (
-    id IDENTITY PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
+    id   bigserial PRIMARY KEY,
+    name varchar(100) NOT NULL UNIQUE
 );
 
-CREATE TABLE product
+CREATE TABLE inventory.product
 (
-    id IDENTITY PRIMARY KEY,
-    name        VARCHAR(100) NOT NULL,
-    price       DOUBLE       NOT NULL,
-    description VARCHAR(2000),
-    category_id INT          NOT NULL
+    id          bigserial PRIMARY KEY,
+    name        varchar(100) NOT NULL,
+    price       real         NOT NULL,
+    description varchar(2000),
+    category_id integer      NOT NULL,
+    UNIQUE (name, price),
+    CONSTRAINT fk_product_category_id FOREIGN KEY (category_id) REFERENCES inventory.product_category (id)
 );
 
-CREATE TABLE product_property
+CREATE TABLE inventory.product_property
 (
-    id IDENTITY PRIMARY KEY,
-    name        VARCHAR(100) NOT NULL,
-    description VARCHAR(1000),
-    product_id  INT          NOT NULL
+    id          bigserial PRIMARY KEY,
+    name        varchar(100) NOT NULL UNIQUE,
+    description varchar(1000),
+    product_id  integer      NOT NULL,
+    CONSTRAINT fk_product_property_product_id FOREIGN KEY (product_id) REFERENCES inventory.product (id)
 );
 
-CREATE TABLE inventory_item
+CREATE TABLE inventory.inventory_item
 (
-    id IDENTITY PRIMARY KEY,
-    quantity   INT NOT NULL,
-    product_id INT NOT NULL
+    id         bigserial PRIMARY KEY,
+    quantity   integer NOT NULL,
+    product_id integer NOT NULL UNIQUE,
+    CONSTRAINT fk_inventory_item_product_id FOREIGN KEY (product_id) REFERENCES inventory.product (id)
 );
-
-
-ALTER TABLE product_category
-    ADD UNIQUE (name);
-
-ALTER TABLE product
-    ADD UNIQUE (name, price);
-
-ALTER TABLE product
-    ADD FOREIGN KEY (category_id) REFERENCES product_category (id);
-
-ALTER TABLE product_property
-    ADD UNIQUE (name);
-
-ALTER TABLE product_property
-    ADD FOREIGN KEY (product_id) REFERENCES product (id);
-
-ALTER TABLE inventory_item
-    ADD UNIQUE (product_id);
-
-ALTER TABLE inventory_item
-    ADD FOREIGN KEY (product_id) REFERENCES product (id);
