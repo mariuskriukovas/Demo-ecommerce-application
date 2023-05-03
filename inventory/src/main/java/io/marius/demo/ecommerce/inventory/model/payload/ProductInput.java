@@ -1,6 +1,7 @@
 package io.marius.demo.ecommerce.inventory.model.payload;
 
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 public class ProductInput {
   Long id;
@@ -9,6 +10,15 @@ public class ProductInput {
   String description;
   String productCategory;
   List<PropertyInput> properties;
+  List<MultipartFile> files;
+
+  public List<MultipartFile> getFiles() {
+    return files;
+  }
+
+  public void setFiles(List<MultipartFile> files) {
+    this.files = files;
+  }
 
   public Long getId() {
     return id;

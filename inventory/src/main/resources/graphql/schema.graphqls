@@ -55,21 +55,24 @@ type Query{
 }
 
 # Mutation
-
-input ProductInput{
-    id: Int
-    name: String!
-    price: Float
-    description: String
-    productCategory: String
-    properties: [PropertyInput]
-}
-input PropertyInput{
-    id: Int
-    name: String!
-    description: String
-}
-
-type Mutation{
-    createProduct(product: ProductInput):String
-}
+#
+#scalar Upload
+#
+#input ProductInput{
+#    id: Int
+#    name: String!
+#    price: Float
+#    description: String
+#    productCategory: String
+#    properties: [PropertyInput]
+#    file:  Upload
+#}
+#input PropertyInput{
+#    id: Int
+#    name: String!
+#    description: String
+#}
+#
+#type Mutation {
+#    createProduct(product: ProductInput):String
+#}

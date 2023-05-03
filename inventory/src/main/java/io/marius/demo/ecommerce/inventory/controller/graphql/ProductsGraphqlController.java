@@ -11,10 +11,10 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class ProductsController {
+public class ProductsGraphqlController {
   private final ProductService productService;
 
-  public ProductsController(ProductService productService) {
+  public ProductsGraphqlController(ProductService productService) {
     this.productService = productService;
   }
 
