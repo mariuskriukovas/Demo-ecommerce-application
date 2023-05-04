@@ -29,4 +29,7 @@ export default {
     },]);
     return (await api.post("graphql", query))?.data
   },
+  async createProduct(data = {}) {
+    return (await api.post("products", api.mapToFormData(data), api.fileHeaders))?.data
+  },
 };
