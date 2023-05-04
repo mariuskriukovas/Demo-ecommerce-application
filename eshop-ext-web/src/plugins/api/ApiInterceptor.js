@@ -1,4 +1,5 @@
 import axios from "axios";
+import {isArray} from "lodash";
 
 export default (basePath) => {
   // Todo improve latter
@@ -13,7 +14,31 @@ export default (basePath) => {
     headers['Authorization'] = authenticatedHeader
   }
 
-  return axios.create({
+  const instance = axios.create({
     baseURL: `/${basePath}`, withCredentials: false, headers,
   });
+
+  instance.mapToFormData = (form) => {
+    const formData = new FormData()
+
+    Object.keys(form).forEach((key) => {
+      const val = form[key]
+      if (isArray(val)) {
+        Object.values(val).forEach((value) => // ?? JSON.stringify(value)
+          value instanceof Blob ? formData.append(key, value) : formData.append(key, value),)
+      } else if (val !== null && val !== undefined) {
+        formData.append(key, val)
+      }
+    })
+
+    return formData
+  }
+
+  instance.fileHeaders = {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }
+
+  return instance;
 };
