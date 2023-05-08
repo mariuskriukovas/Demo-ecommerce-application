@@ -1,3 +1,11 @@
+aws:
+  credentials:
+    accessKey: xxx
+    secretKey: xxx
+  s3:
+    zone: xxx
+    bucket:
+      name: xxx
 spring:
   security:
     oauth2:
@@ -5,6 +13,7 @@ spring:
         jwt:
           issuer-uri: Marius
           jwk-set-uri: http://auth-server:9000/api/.well-known/jwks.json
+
   flyway:
     enabled: 'true'
     baseline-on-migrate: 'true'
@@ -19,7 +28,7 @@ spring:
     driverClassName: org.postgresql.Driver
     password: inventory_x
     username: inventory_x
-    url: jdbc:postgresql://XXXXXXXX/postgres
+    url: jdbc:postgresql://xxx/postgres
   h2:
     console:
       path: /h2-console
