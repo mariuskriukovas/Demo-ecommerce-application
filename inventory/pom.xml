@@ -128,6 +128,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>1.12.462</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.marius.demo.ecommerce.commons</groupId>
             <artifactId>persistence</artifactId>
             <version>0.0.1-SNAPSHOT</version>

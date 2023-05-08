@@ -5,6 +5,16 @@ type InventoryItem{
     product: Product
 }
 
+type File{
+    id: Int!
+    s3Url: String!
+}
+
+type ProductFile{
+    id: Int!
+    file: File
+}
+
 type Product{
     id: Int!
     name: String!
@@ -12,6 +22,7 @@ type Product{
     description: String
     productCategory: ProductCategory
     properties: [ProductProperty]
+    productFiles: [ProductFile]
 }
 
 type ProductCategory{

@@ -2,7 +2,6 @@ package io.marius.demo.ecommerce.inventory.service;
 
 import static io.marius.demo.ecommerce.inventory.utility.FieldUtility.isFieldValid;
 
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,12 +16,13 @@ import io.marius.demo.ecommerce.inventory.repository.ProductRepository;
 import io.marius.demo.ecommerce.inventory.service.predicates.ProductPredicate;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.ValidationException;
-
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service("ProductService")
 public class ProductService {
@@ -34,11 +34,12 @@ public class ProductService {
   private final FileService fileService;
 
   public ProductService(
-          ProductRepository productRepository,
-          ProductCategoryRepository productCategoryRepository,
-          EntityManager entityManager,
-          ProductMapper productMapper,
-          ProductPredicate productPredicate, FileService fileService) {
+      ProductRepository productRepository,
+      ProductCategoryRepository productCategoryRepository,
+      EntityManager entityManager,
+      ProductMapper productMapper,
+      ProductPredicate productPredicate,
+      FileService fileService) {
     this.productRepository = productRepository;
     this.productCategoryRepository = productCategoryRepository;
     this.queryFactory = new JPAQueryFactory(entityManager);
@@ -50,14 +51,20 @@ public class ProductService {
   @Transactional
   public String createProduct(ProductInput productInput) {
 
-//    if (isFieldValid(productInput.getFiles())) {
-//      try {
-//        PutObjectResult result = fileService.saveFile(productInput.getFiles().get(0));
-//        result.
-//      } catch (IOException e) {
-//        throw new ValidationException("Error uploading images");
-//      }
-//    }
+    List<File> uploadedFiles = null;
+    if (isFieldValid(productInput.getFiles())) {
+      uploadedFiles =
+          productInput.getFiles().stream()
+              .map(
+                  (MultipartFile multipartFile) -> {
+                    try {
+                      return fileService.saveFile(multipartFile);
+                    } catch (IOException e) {
+                      throw new ValidationException("Error uploading images");
+                    }
+                  })
+              .toList();
+    }
 
     ProductCategory category =
         productCategoryRepository
@@ -83,6 +90,14 @@ public class ProductService {
       for (ProductProperty property : product.getProperties()) {
         property.setProduct(product);
       }
+    }
+
+    if (uploadedFiles != null) {
+      List<ProductFile> productFiles = new ArrayList<>();
+      for (File file : uploadedFiles) {
+        productFiles.add(productMapper.toProductFile(product, file));
+      }
+      product.setProductFiles(productFiles);
     }
 
     product = productRepository.save(product);
