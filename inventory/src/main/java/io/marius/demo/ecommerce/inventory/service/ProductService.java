@@ -1,7 +1,8 @@
 package io.marius.demo.ecommerce.inventory.service;
 
-import static io.marius.demo.ecommerce.inventory.utility.FilterUtility.isValidFilter;
+import static io.marius.demo.ecommerce.inventory.utility.FieldUtility.isFieldValid;
 
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -16,6 +17,8 @@ import io.marius.demo.ecommerce.inventory.repository.ProductRepository;
 import io.marius.demo.ecommerce.inventory.service.predicates.ProductPredicate;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.ValidationException;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
@@ -28,22 +31,34 @@ public class ProductService {
   private final JPAQueryFactory queryFactory;
   private final ProductMapper productMapper;
   private final ProductPredicate productPredicate;
+  private final FileService fileService;
 
   public ProductService(
-      ProductRepository productRepository,
-      ProductCategoryRepository productCategoryRepository,
-      EntityManager entityManager,
-      ProductMapper productMapper,
-      ProductPredicate productPredicate) {
+          ProductRepository productRepository,
+          ProductCategoryRepository productCategoryRepository,
+          EntityManager entityManager,
+          ProductMapper productMapper,
+          ProductPredicate productPredicate, FileService fileService) {
     this.productRepository = productRepository;
     this.productCategoryRepository = productCategoryRepository;
     this.queryFactory = new JPAQueryFactory(entityManager);
     this.productMapper = productMapper;
     this.productPredicate = productPredicate;
+    this.fileService = fileService;
   }
 
   @Transactional
   public String createProduct(ProductInput productInput) {
+
+//    if (isFieldValid(productInput.getFiles())) {
+//      try {
+//        PutObjectResult result = fileService.saveFile(productInput.getFiles().get(0));
+//        result.
+//      } catch (IOException e) {
+//        throw new ValidationException("Error uploading images");
+//      }
+//    }
+
     ProductCategory category =
         productCategoryRepository
             .findByName(productInput.getProductCategory())
@@ -90,7 +105,7 @@ public class ProductService {
 
     JPAQuery<Product> query = queryFactory.selectFrom(product).where(productQuery);
 
-    if (isValidFilter(filter.getProperties())) {
+    if (isFieldValid(filter.getProperties())) {
       Predicate propertyQuery =
           productPredicate.buildPropertiesFilteringPredicate(filter, productProperty);
 
