@@ -66,6 +66,14 @@
       <template v-slot:[`item.productCategory`]="{ item }">
         <span>{{ getProductCategory(item) }}</span>
       </template>
+      <template v-slot:[`item.productImageUrl`]="{ item }">
+        <v-img
+          :src="getItemSource(item)"
+          :width="300"
+          aspect-ratio="16/9"
+          cover
+        ></v-img>
+      </template>
     </v-data-table>
   </v-card>
   <ProductCreate></ProductCreate>
@@ -97,6 +105,7 @@ export default {
         {title: 'Price', align: 'end', key: 'price'},
         {title: 'Description', align: 'end', key: 'description'},
         {title: 'Category', align: 'end', key: 'productCategory'},
+        {title: 'Image', align: 'start', key: 'productImageUrl'},
       ],
       expendedTableHeaders: [
         {
@@ -125,6 +134,15 @@ export default {
     getProductCategory(item) {
       return item?.raw?.productCategory?.name ?? ""
     },
+    getItemSource(item) {
+      const files = item?.raw?.productFiles
+      if (files && files.length > 0) {
+        return files[0]?.file?.s3Url // primary product image
+      } else {
+        // default
+        return "https://marius-image-storage.s3.eu-north-1.amazonaws.com/sorry_not_found.jpg"
+      }
+    }
   },
 }
 </script>
@@ -146,3 +164,5 @@ export default {
   background-color: rgba(187, 222, 251, 0.67) !important;
 }
 </style>
+<script setup>
+</script>

@@ -17,7 +17,10 @@ export default {
       operation: "allProducts",
       fields: ["id", "name", "price", "description", {
         productCategory: ["id", "name"],
-        properties: ["id", "name", "description"]
+        properties: ["id", "name", "description"],
+        productFiles: [{
+          file: ["s3Url"],
+        }]
       }],
       variables: {
         filter: {
@@ -31,5 +34,6 @@ export default {
   },
   async createProduct(data = {}) {
     return (await api.post("products", api.mapToFormData(data), api.fileHeaders))?.data
-  },
+  }
+  ,
 };
