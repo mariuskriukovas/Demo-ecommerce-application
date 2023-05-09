@@ -66,13 +66,28 @@
       <template v-slot:[`item.productCategory`]="{ item }">
         <span>{{ getProductCategory(item) }}</span>
       </template>
-      <template v-slot:[`item.productImageUrl`]="{ item }">
+      <template v-slot:[`item.productFiles`]="{ item }">
         <v-img
           :src="getItemSource(item)"
           :width="300"
           aspect-ratio="16/9"
           cover
         ></v-img>
+      </template>
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-icon
+          color="blue-darken-2"
+          icon="mdi-eye"
+          size="large"
+          @click="navigateToView(item)"
+        ></v-icon>
+        <v-icon
+          class="ml-4"
+          color="red-darken-2"
+          icon="mdi-pencil"
+          size="large"
+          @click="navigateToEdit(item)"
+        ></v-icon>
       </template>
     </v-data-table>
   </v-card>
@@ -83,6 +98,10 @@
 import {useProductStore} from "@/store/product";
 import {mapActions, mapState} from "pinia";
 import ProductCreate from "@/views/tabs/product/ProductCreate.vue";
+import {mdiAccount,} from '@mdi/js'
+import {DEFAULT_IMAGE_URL} from "@/utils/imageUtil";
+import router, {PRODUCT_VIEW_ROUTE_NAME} from "@/router";
+import ProductApi from "@/services/ProductApi";
 
 export default {
   name: 'ProductList',
@@ -92,6 +111,9 @@ export default {
   },
   data() {
     return {
+      icons: {
+        mdiAccount,
+      },
       singleExpand: true,
       expanded: [],
       itemsPerPage: 10,
@@ -105,7 +127,8 @@ export default {
         {title: 'Price', align: 'end', key: 'price'},
         {title: 'Description', align: 'end', key: 'description'},
         {title: 'Category', align: 'end', key: 'productCategory'},
-        {title: 'Image', align: 'start', key: 'productImageUrl'},
+        {title: 'Image', align: 'start', key: 'productFiles'},
+        {title: 'Actions', align: 'end', key: 'actions'},
       ],
       expendedTableHeaders: [
         {
@@ -120,10 +143,17 @@ export default {
       items: [],
     };
   },
+  async mounted() {
+    await this.loadAllProducts()
+  },
   methods: {
     ...mapActions(useProductStore, ['findProducts', 'openCreateProductModal']),
     async onSearch() {
       this.items = await this.findProducts()
+    },
+    async loadAllProducts() {
+      const data = await ProductApi.getProductsByFilterQuery({})
+      this.items = data?.data?.allProducts
     },
     onCreate() {
       this.openCreateProductModal()
@@ -134,18 +164,24 @@ export default {
     getProductCategory(item) {
       return item?.raw?.productCategory?.name ?? ""
     },
+    async navigateToView(item) {
+      await router.push({name: PRODUCT_VIEW_ROUTE_NAME, params: {id: item?.value}})
+    },
+    async navigateToEdit(item) {
+      await router.push({name: PRODUCT_VIEW_ROUTE_NAME, params: {id: item?.value, mode: 'edit'}})
+    },
     getItemSource(item) {
       const files = item?.raw?.productFiles
       if (files && files.length > 0) {
         return files[0]?.file?.s3Url // primary product image
       } else {
-        // default
-        return "https://marius-image-storage.s3.eu-north-1.amazonaws.com/sorry_not_found.jpg"
+        return DEFAULT_IMAGE_URL
       }
     }
   },
 }
 </script>
+
 <style>
 .text-black input {
   color: #212121 !important;
@@ -164,5 +200,3 @@ export default {
   background-color: rgba(187, 222, 251, 0.67) !important;
 }
 </style>
-<script setup>
-</script>
