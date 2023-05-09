@@ -3,6 +3,7 @@ package io.marius.demo.ecommerce.inventory.service;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import io.marius.demo.ecommerce.inventory.entity.File;
@@ -53,11 +54,17 @@ public class FileService {
         buildFileEntity(uploadResult, uniqFilename, multipartFile.getOriginalFilename()));
   }
 
+  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public void removeFile(File file) throws SdkClientException, IOException {
+    s3client.deleteObject(new DeleteObjectRequest(fileBucketName, file.getKey()));
+    fileRepository.delete(file);
+  }
+
   private File buildFileEntity(PutObjectResult input, String uniqName, String originalName) {
     String s3Url = String.format("https://%s.%s/%s", fileBucketName, s3Zone, uniqName);
     return File.FileBuilder.aFile()
         .withFileName(originalName)
-        .withS3Etag(input.getETag())
+        .withKey(uniqName)
         .withS3Url(s3Url)
         .build();
   }

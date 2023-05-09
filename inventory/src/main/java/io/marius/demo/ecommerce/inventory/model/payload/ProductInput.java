@@ -8,9 +8,17 @@ public class ProductInput {
   String name;
   Double price;
   String description;
-  String productCategory;
+  String productCategoryName;
   List<PropertyInput> properties;
   List<MultipartFile> files;
+
+  public String getProductCategoryName() {
+    return productCategoryName;
+  }
+
+  public void setProductCategoryName(String productCategoryName) {
+    this.productCategoryName = productCategoryName;
+  }
 
   public List<MultipartFile> getFiles() {
     return files;
@@ -50,14 +58,6 @@ public class ProductInput {
 
   public void setDescription(String description) {
     this.description = description;
-  }
-
-  public String getProductCategory() {
-    return productCategory;
-  }
-
-  public void setProductCategory(String productCategory) {
-    this.productCategory = productCategory;
   }
 
   public List<PropertyInput> getProperties() {
