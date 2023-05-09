@@ -2,7 +2,7 @@ CREATE TABLE inventory.file
 (
     id        bigserial PRIMARY KEY,
     file_name varchar(500) NOT NULL,
-    s3_etag   varchar(100) NOT NULL,
+    key       varchar(100) NOT NULL,
     s3_url    varchar(500) NOT NULL
 );
 
