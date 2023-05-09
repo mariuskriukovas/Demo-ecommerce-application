@@ -101,7 +101,6 @@ import ProductCreate from "@/views/tabs/product/ProductCreate.vue";
 import {mdiAccount,} from '@mdi/js'
 import {DEFAULT_IMAGE_URL} from "@/utils/imageUtil";
 import router, {PRODUCT_VIEW_ROUTE_NAME} from "@/router";
-import ProductApi from "@/services/ProductApi";
 
 export default {
   name: 'ProductList',
@@ -144,16 +143,12 @@ export default {
     };
   },
   async mounted() {
-    await this.loadAllProducts()
+    await this.onSearch()
   },
   methods: {
     ...mapActions(useProductStore, ['findProducts', 'openCreateProductModal']),
     async onSearch() {
       this.items = await this.findProducts()
-    },
-    async loadAllProducts() {
-      const data = await ProductApi.getProductsByFilterQuery({})
-      this.items = data?.data?.allProducts
     },
     onCreate() {
       this.openCreateProductModal()

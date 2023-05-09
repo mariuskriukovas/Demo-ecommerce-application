@@ -10,9 +10,9 @@
           <v-text-field v-model="product.newProduct.name" clearable label="Name" variant="underlined"></v-text-field>
         </v-col>
         <v-col cols="6">
-          <v-select v-model="product.newProduct.productCategory" :items="classifiers.categories" clearable
-                        item-title="name" label="Product Category" item-value="name"
-                        variant="underlined"></v-select>
+          <v-select v-model="product.newProduct.productCategoryName" :items="classifiers.categories" clearable
+                    item-title="name" item-value="name" label="Product Category"
+                    variant="underlined"></v-select>
         </v-col>
       </v-row>
       <v-row class="ml-2 mr-2">

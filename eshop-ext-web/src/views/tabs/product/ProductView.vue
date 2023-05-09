@@ -6,7 +6,7 @@
                       variant="underlined"></v-text-field>
       </v-col>
       <v-col cols="6">
-        <v-select v-model="product.productCategory" :clearable="!viewMode" :items="classifiers.categories"
+        <v-select v-model="product.productCategoryName" :clearable="!viewMode" :items="classifiers.categories"
                   :readonly="viewMode" item-title="name" item-value="name"
                   label="Product Category" variant="underlined"></v-select>
       </v-col>
@@ -27,7 +27,7 @@
                       label="Description" variant="underlined"></v-text-field>
       </v-col>
     </v-row>
-    <v-row class="ml-2 mr-2">
+    <v-row v-if="viewMode" class="ml-2 mr-2">
       <v-carousel v-model="activeIndex" show-arrows="hover">
         <v-carousel-item
           v-for="(item,i) in product.productFiles"
@@ -41,12 +41,17 @@
         </v-carousel-item>
       </v-carousel>
     </v-row>
+    <v-row v-else class="ml-2 mr-2">
+      <v-col>
+        <v-file-input v-model="product.files" clearable label="Files" multiple variant="underlined"></v-file-input>
+      </v-col>
+    </v-row>
     <v-row class="mb-2 ml-2 mr-2">
       <v-col class="text-right mr-2">
         <v-btn v-if="viewMode" class="text-right mr-2" color="primary" outlined @click="navigateToEdit">
           Edit
         </v-btn>
-        <v-btn v-if="!viewMode" class="text-right" color="primary" outlined>
+        <v-btn v-if="!viewMode" class="text-right" color="primary" outlined @click="onSave">
           Save
         </v-btn>
       </v-col>
@@ -79,7 +84,13 @@ export default {
     return {
       activeIndex: 0,
       product: {
-        name: null, description: null, productCategory: null, price: null, properties: null, productFiles: []
+        name: null,
+        description: null,
+        productCategoryName: null,
+        price: null,
+        properties: null,
+        productFiles: [],
+        files: []
       },
     };
   },
@@ -104,7 +115,7 @@ export default {
     async loadProduct() {
       const {id} = this.$route.params
       const {data} = await ProductApi.getProductById(id)
-      this.product = {...this.product, ...data?.product}
+      this.product = {...this.product, ...data?.product, productCategoryName: data?.product?.productCategory?.name}
 
       if (this.product.productFiles.length < 1) {
         data.product.productFiles.push({
@@ -113,6 +124,10 @@ export default {
           }
         })
       }
+    },
+    async onSave() {
+      const data = await ProductApi.updateProduct(this.product)
+      console.log(data) // todo implement notifications
     }
   },
 }

@@ -41,5 +41,7 @@ export default {
     return (await api.post("graphql", query))?.data
   }, async createProduct(data = {}) {
     return (await api.post("products", api.mapToFormData(data), api.fileHeaders))?.data
+  }, async updateProduct(data = {}) {
+    return (await api.put("products", api.mapToFormData(data), api.fileHeaders))?.data
   },
 };
