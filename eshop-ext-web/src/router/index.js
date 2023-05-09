@@ -4,16 +4,26 @@ import HomeTabs from "@/views/Home.vue";
 import Login from "@/views/Login.vue";
 import {useAppStore} from '@/store/app'
 import ProductList from "@/views/tabs/product/ProductList.vue";
+import ProductView from "@/views/tabs/product/ProductView.vue";
+
+export const LOGIN_ROUTE_NAME = Login.name
+export const HOME_ROUTE_NAME = HomeTabs.name
+export const INVENTORY_TAB_ROUTE_NAME = Inventory.name
+export const PRODUCT_TAB_ROUTE_NAME = ProductList.name
+export const PRODUCT_VIEW_ROUTE_NAME = ProductView.name
+
 
 const routes = [{
   path: '/', component: () => import('@/layouts/default/Default.vue'), children: [{
-    path: "/", name: Login.name, component: Login,
+    path: "/", name: LOGIN_ROUTE_NAME, component: Login,
   }, {
-    path: "/home", name: HomeTabs.name, component: HomeTabs, children: [{
-      path: "inventory-items", name: Inventory.name, component: Inventory
+    path: "/home", name: HOME_ROUTE_NAME, component: HomeTabs, children: [{
+      path: "inventory-items", name: INVENTORY_TAB_ROUTE_NAME, component: Inventory
     }, {
-      path: "products", name: ProductList.name, component: ProductList,
+      path: "products", name: PRODUCT_TAB_ROUTE_NAME, component: ProductList,
     },]
+  }, {
+    path: "/products/:id/:mode?", name: PRODUCT_VIEW_ROUTE_NAME, component: ProductView
   }],
 },]
 
