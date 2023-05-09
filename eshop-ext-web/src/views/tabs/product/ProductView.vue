@@ -65,6 +65,7 @@ import {useClassifierStore} from "@/store/classifier";
 import ProductApi from "@/services/ProductApi";
 import {DEFAULT_IMAGE_URL} from "@/utils/imageUtil";
 import router, {PRODUCT_VIEW_ROUTE_NAME} from "@/router";
+import {useSnackbarStore} from "@/store/snackbars";
 
 export default {
   name: 'ProductView',
@@ -109,6 +110,7 @@ export default {
   },
   methods: {
     ...mapActions(useClassifierStore, ['loadProperties', 'loadCategories']),
+    ...mapActions(useSnackbarStore, ['openSnackbar']),
     async navigateToEdit() {
       await router.push({name: PRODUCT_VIEW_ROUTE_NAME, params: {...this.$route.params, mode: 'edit'}})
     },
@@ -126,8 +128,9 @@ export default {
       }
     },
     async onSave() {
-      const data = await ProductApi.updateProduct(this.product)
-      console.log(data) // todo implement notifications
+      const {id} = this.$route.params
+      const data = await ProductApi.updateProduct(id, this.product)
+      this.openSnackbar(data)
     }
   },
 }

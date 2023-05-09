@@ -54,6 +54,8 @@
 import {useProductStore} from "@/store/product";
 import {mapActions, mapState} from "pinia";
 import {useClassifierStore} from "@/store/classifier";
+import {useSnackbarStore} from "@/store/snackbars";
+
 
 export default {
   name: 'ProductCreate',
@@ -74,12 +76,14 @@ export default {
   methods: {
     ...mapActions(useProductStore, ['closeCreateProductModal', 'createProduct']),
     ...mapActions(useClassifierStore, ['loadProperties', 'loadCategories']),
+    ...mapActions(useSnackbarStore, ['openSnackbar']),
 
     onClose() {
       this.closeCreateProductModal()
     },
     async onCreate() {
-      await this.createProduct(this.files)
+      const successMessage = await this.createProduct(this.files)
+      this.openSnackbar(successMessage)
     },
   },
 }

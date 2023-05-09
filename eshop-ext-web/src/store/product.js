@@ -19,9 +19,7 @@ export const useProductStore = defineStore('product', {
     }, closeCreateProductModal() {
       this.product.isCreateProductModalVisible = false
     }, async createProduct(files = []) {
-      const data = await ProductApi.createProduct({...this.product.newProduct, files})
-      console.log(data)
-      // todo add error and success handling
+      return  await ProductApi.createProduct({...this.product.newProduct, files})
     },
   }, persist: {
     enabled: true
