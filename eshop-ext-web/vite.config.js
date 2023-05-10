@@ -47,6 +47,7 @@ export default defineConfig({
       },
       '^/inventory': {
         target: 'http://inventory-server:9001',
+        // target: 'http://mariusspringapplication-env.eba-niktivih.eu-north-1.elasticbeanstalk.com:9001',
         rewrite: path => path.replace(/^\/inventory/, 'api'),
         secure: false,
         changeOrigin: true,
