@@ -9,10 +9,10 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class InventoryController {
+public class InventoryGraphqlController {
   private final InventoryService inventoryService;
 
-  public InventoryController(InventoryService inventoryService) {
+  public InventoryGraphqlController(InventoryService inventoryService) {
     this.inventoryService = inventoryService;
   }
 

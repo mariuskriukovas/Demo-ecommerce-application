@@ -5,6 +5,16 @@ type InventoryItem{
     product: Product
 }
 
+type File{
+    id: Int!
+    s3Url: String!
+}
+
+type ProductFile{
+    id: Int!
+    file: File
+}
+
 type Product{
     id: Int!
     name: String!
@@ -12,6 +22,7 @@ type Product{
     description: String
     productCategory: ProductCategory
     properties: [ProductProperty]
+    productFiles: [ProductFile]
 }
 
 type ProductCategory{
@@ -55,21 +66,24 @@ type Query{
 }
 
 # Mutation
-
-input ProductInput{
-    id: Int
-    name: String!
-    price: Float
-    description: String
-    productCategory: String
-    properties: [PropertyInput]
-}
-input PropertyInput{
-    id: Int
-    name: String!
-    description: String
-}
-
-type Mutation{
-    createProduct(product: ProductInput):String
-}
+#
+#scalar Upload
+#
+#input ProductInput{
+#    id: Int
+#    name: String!
+#    price: Float
+#    description: String
+#    productCategory: String
+#    properties: [PropertyInput]
+#    file:  Upload
+#}
+#input PropertyInput{
+#    id: Int
+#    name: String!
+#    description: String
+#}
+#
+#type Mutation {
+#    createProduct(product: ProductInput):String
+#}

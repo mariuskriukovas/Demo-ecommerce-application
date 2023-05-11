@@ -23,6 +23,11 @@ public class Product extends BaseEntity {
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ProductProperty> properties;
 
+  @OneToMany(
+      mappedBy = "product",
+      cascade = CascadeType.ALL) // File service is responsible for removal
+  private List<ProductFile> productFiles;
+
   public String getName() {
     return name;
   }
@@ -61,5 +66,13 @@ public class Product extends BaseEntity {
 
   public void setProperties(List<ProductProperty> properties) {
     this.properties = properties;
+  }
+
+  public List<ProductFile> getProductFiles() {
+    return productFiles;
+  }
+
+  public void setProductFiles(List<ProductFile> productFiles) {
+    this.productFiles = productFiles;
   }
 }

@@ -1,6 +1,6 @@
 package io.marius.demo.ecommerce.inventory.service.predicates;
 
-import static io.marius.demo.ecommerce.inventory.utility.FilterUtility.isValidFilter;
+import static io.marius.demo.ecommerce.inventory.utility.FieldUtility.isFieldValid;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
@@ -15,15 +15,15 @@ public class ProductPredicate {
   public Predicate buildProductFilteringPredicate(ProductFilter filter, QProduct product) {
     BooleanBuilder queryBuilder = new BooleanBuilder();
 
-    if (isValidFilter(filter.getName())) {
+    if (isFieldValid(filter.getName())) {
       queryBuilder.and(product.name.like("%" + filter.getName() + "%"));
     }
 
-    if (isValidFilter(filter.getDescription())) {
+    if (isFieldValid(filter.getDescription())) {
       queryBuilder.and(product.description.like("%" + filter.getDescription() + "%"));
     }
 
-    if (isValidFilter(filter.getCategory())) {
+    if (isFieldValid(filter.getCategory())) {
       queryBuilder.and(product.productCategory.name.eq(filter.getCategory()));
     }
 
@@ -43,11 +43,11 @@ public class ProductPredicate {
 
     for (PropertyFilter propertyFilter : filter.getProperties()) {
 
-      if (isValidFilter(propertyFilter.getName())) {
+      if (isFieldValid(propertyFilter.getName())) {
         queryBuilder.and(productProperty.name.like("%" + propertyFilter.getName() + "%"));
       }
 
-      if (isValidFilter(propertyFilter.getDescription())) {
+      if (isFieldValid(propertyFilter.getDescription())) {
         queryBuilder.and(
             productProperty.description.like("%" + propertyFilter.getDescription() + "%"));
       }
