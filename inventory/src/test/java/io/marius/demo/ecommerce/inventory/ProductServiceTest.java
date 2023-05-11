@@ -104,7 +104,7 @@ class ProductServiceTest {
 
     input.setName("MacBook PRO");
     input.setDescription("Best MacBook");
-    input.setProductCategory("Laptop");
+    input.setProductCategoryName("Laptop");
     input.setProperties(List.of(property));
     input.setPrice(1999.99);
 
@@ -122,7 +122,7 @@ class ProductServiceTest {
     input.setPrice(1100.99);
     input.setDescription(
         "The latest MacBook Air, powered by Apple’s M2 processor, is the best laptop for most people.");
-    input.setProductCategory("Laptop");
+    input.setProductCategoryName("Laptop");
 
     DataIntegrityViolationException exception = null;
     try {
