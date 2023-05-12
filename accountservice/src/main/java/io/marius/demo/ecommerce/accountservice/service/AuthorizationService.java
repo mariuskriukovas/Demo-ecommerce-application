@@ -4,7 +4,9 @@ import static java.util.stream.Collectors.joining;
 
 import io.marius.demo.ecommerce.accountservice.entity.ShopUser;
 import io.marius.demo.ecommerce.accountservice.model.payload.LoginPayload;
+import io.marius.demo.ecommerce.accountservice.model.view.UserView;
 import java.time.Instant;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,16 +39,22 @@ public class AuthorizationService {
   }
 
   @Transactional(readOnly = true)
-  public ResponseEntity<String> login(LoginPayload payload) {
+  public ResponseEntity<UserView> login(LoginPayload payload) {
     try {
       Authentication authentication =
           authenticationManager.authenticate(
               new UsernamePasswordAuthenticationToken(
                   payload.getUsername(), payload.getPassword()));
 
+      UserView userView =
+          UserView.UserViewBuilder.anUserView()
+              .withUsername(payload.getUsername())
+              .withRoles(new ArrayList<>(authentication.getAuthorities()))
+              .build();
+
       return ResponseEntity.ok()
           .header(HttpHeaders.AUTHORIZATION, buildJwtToken(authentication))
-          .body("Authorized");
+          .body(userView);
     } catch (BadCredentialsException ex) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
