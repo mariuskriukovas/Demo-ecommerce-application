@@ -10,8 +10,9 @@
     <v-app-bar-title>
       Demo UI for Marius ecommerce application
     </v-app-bar-title>
-    <template v-slot:append>
-      <v-btn v-if="store.isAuthenticated" color="white" @click="logout">
+    <template v-if="store.isAuthenticated" v-slot:append>
+      <p>User: {{ store.getUsername }}</p>
+      <v-btn color="white" @click="logout">
         Sign out
       </v-btn>
     </template>
