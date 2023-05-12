@@ -82,6 +82,7 @@
           @click="navigateToView(item)"
         ></v-icon>
         <v-icon
+          v-if="isAdmin"
           class="ml-4"
           color="red-darken-2"
           icon="mdi-pencil"
@@ -101,12 +102,17 @@ import ProductCreate from "@/views/tabs/product/ProductCreate.vue";
 import {mdiAccount,} from '@mdi/js'
 import {DEFAULT_IMAGE_URL} from "@/utils/imageUtil";
 import router, {PRODUCT_VIEW_ROUTE_NAME} from "@/router";
+import {useAppStore} from "@/store/app";
 
 export default {
   name: 'ProductList',
   components: {ProductCreate},
   computed: {
     ...mapState(useProductStore, ['product']),
+    ...mapState(useAppStore, ['hasRole']),
+    isAdmin() {
+      return this.hasRole("ADMIN")
+    },
   },
   data() {
     return {

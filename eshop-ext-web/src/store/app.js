@@ -15,6 +15,8 @@ export const useAppStore = defineStore('app', {
       return state.auth?.authenticatedHeader
     }, getUsername(state) {
       return state.user?.username
+    }, hasRole(state) {
+      return (role) => state.user?.roles.find(item => item?.authority === role) !== undefined
     },
   }, actions: {
     async login(data) {
