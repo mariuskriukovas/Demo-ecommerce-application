@@ -2,20 +2,23 @@ import axios from "axios";
 import {isArray} from "lodash";
 
 export default (basePath) => {
-  // Todo improve latter
-  const appStorage = JSON.parse(sessionStorage.getItem('app'))
-  const authenticatedHeader = appStorage?.auth?.authenticatedHeader ?? null
-
   const headers = {
     Accept: "application/json", "Content-Type": "application/json",
   }
 
-  if (authenticatedHeader) {
-    headers['Authorization'] = authenticatedHeader
-  }
-
   const instance = axios.create({
     baseURL: `/${basePath}`, withCredentials: false, headers,
+  });
+
+  instance.interceptors.request.use(function (config) {
+    const appStorage = JSON.parse(sessionStorage.getItem('app'))
+    const authenticatedHeader = appStorage?.auth?.authenticatedHeader ?? null
+
+    if (authenticatedHeader) {
+      config.headers.Authorization = authenticatedHeader;
+    }
+
+    return config;
   });
 
   instance.mapToFormData = (form) => {
