@@ -1,6 +1,5 @@
 package io.marius.demo.ecommerce.accountservice.service;
 
-import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
 
 import io.marius.demo.ecommerce.accountservice.entity.ShopUser;
@@ -69,7 +68,7 @@ public class AuthorizationService {
             .issuer(jwtIssuer)
             .issuedAt(now)
             .expiresAt(now.plusSeconds(expiry))
-            .subject(format("%s,%s", user.getId(), user.getUsername()))
+            .subject(user.getUsername())
             .claim("roles", scope)
             .build();
 

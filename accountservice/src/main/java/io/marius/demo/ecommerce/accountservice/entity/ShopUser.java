@@ -1,11 +1,10 @@
 package io.marius.demo.ecommerce.accountservice.entity;
 
-import io.marius.demo.ecommerce.accountservice.security.enums.UserRole;
 import io.marius.demo.ecommerce.persistence.entity.BaseEntity;
 import jakarta.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +21,9 @@ public class ShopUser extends BaseEntity implements UserDetails {
 
   @Column(name = "email", length = 100)
   private String email;
+
+  @OneToMany(mappedBy = "shopUser", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Role> roles;
 
   @Override
   public String getUsername() {
@@ -51,10 +53,11 @@ public class ShopUser extends BaseEntity implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    List<GrantedAuthority> authorities = new ArrayList<>();
+    List<GrantedAuthority> authorities =
+        this.roles.stream()
+            .map(e -> new SimpleGrantedAuthority(e.getRole().name()))
+            .collect(Collectors.toList());
 
-    // Todo implement authorities
-    authorities.add(new SimpleGrantedAuthority(UserRole.USER.name()));
     return authorities;
   }
 
