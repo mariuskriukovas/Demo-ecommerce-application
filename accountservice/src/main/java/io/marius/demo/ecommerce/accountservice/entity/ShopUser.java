@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Table(name = "shop_user")
 public class ShopUser extends BaseEntity implements UserDetails {
+  @Column(name = "uid", length = 100)
+  private String uid;
 
   @Column(name = "username", length = 100)
   private String username;
@@ -79,5 +81,21 @@ public class ShopUser extends BaseEntity implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  public String getUid() {
+    return uid;
+  }
+
+  public void setUid(String uid) {
+    this.uid = uid;
+  }
+
+  public List<Role> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(List<Role> roles) {
+    this.roles = roles;
   }
 }

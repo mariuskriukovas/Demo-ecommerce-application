@@ -68,7 +68,7 @@ public class AuthorizationService {
             .issuer(jwtIssuer)
             .issuedAt(now)
             .expiresAt(now.plusSeconds(expiry))
-            .subject(user.getUsername())
+            .subject(user.getUid())
             .claim("roles", scope)
             .build();
 
