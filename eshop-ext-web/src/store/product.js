@@ -7,7 +7,7 @@ export const useProductStore = defineStore('product', {
       filter: {
         name: null, description: null, category: null, priceFrom: null, priceTo: null, properties: null,
       }, newProduct: {
-        name: null, description: null, productCategoryName: null, price: null, properties: null,
+        name: null, description: null, productCategoryName: null, price: null, properties: [],
       }, isCreateProductModalVisible: false,
     },
   }), getters: {}, actions: {
@@ -19,7 +19,7 @@ export const useProductStore = defineStore('product', {
     }, closeCreateProductModal() {
       this.product.isCreateProductModalVisible = false
     }, async createProduct(files = []) {
-      return  await ProductApi.createProduct({...this.product.newProduct, files})
+      return await ProductApi.createProduct({...this.product.newProduct, files})
     },
   }, persist: {
     enabled: true

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {isArray} from "lodash";
+import {isArray, isObject} from "lodash";
 
 export default (basePath) => {
   const headers = {
@@ -21,16 +21,25 @@ export default (basePath) => {
     return config;
   });
 
+  const stringify = (value) => {
+    if (value instanceof Blob) {
+      return value
+    } else if (isObject(value)) {
+      return JSON.stringify(value)
+    } else return value
+  }
+
   instance.mapToFormData = (form) => {
     const formData = new FormData()
 
     Object.keys(form).forEach((key) => {
       const val = form[key]
       if (isArray(val)) {
-        Object.values(val).forEach((value) => // ?? JSON.stringify(value)
-          value instanceof Blob ? formData.append(key, value) : formData.append(key, value),)
+        Object.values(val).forEach((value) => {
+          formData.append(key, stringify(value))
+        })
       } else if (val !== null && val !== undefined) {
-        formData.append(key, val)
+        formData.append(key, stringify(val))
       }
     })
 

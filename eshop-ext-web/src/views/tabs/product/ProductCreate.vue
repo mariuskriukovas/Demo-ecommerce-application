@@ -10,19 +10,15 @@
           <v-text-field v-model="product.newProduct.name" clearable label="Name" variant="underlined"></v-text-field>
         </v-col>
         <v-col cols="6">
-          <v-select v-model="product.newProduct.productCategoryName" :items="classifiers.categories" clearable
-                    item-title="name" item-value="name" label="Product Category"
-                    variant="underlined"></v-select>
+          <v-text-field v-model="product.newProduct.price" clearable label="Price"
+                        type="number" variant="underlined"></v-text-field>
         </v-col>
       </v-row>
       <v-row class="ml-2 mr-2">
-        <v-col cols="6">
-          <v-text-field v-model="product.newProduct.properties" clearable disabled label="Properties"
-                        variant="underlined"></v-text-field>
-        </v-col>
-        <v-col cols="6">
-          <v-text-field v-model="product.newProduct.price" clearable label="Price"
-                        type="number" variant="underlined"></v-text-field>
+        <v-col cols="12">
+          <v-select v-model="product.newProduct.productCategoryName" :items="classifiers.categories" clearable
+                    item-title="name" item-value="name" label="Product Category"
+                    variant="underlined"></v-select>
         </v-col>
       </v-row>
       <v-row class="ml-2 mr-2">
@@ -34,6 +30,11 @@
       <v-row class="ml-2 mr-2">
         <v-col>
           <v-file-input v-model="files" clearable label="Files" multiple variant="underlined"></v-file-input>
+        </v-col>
+      </v-row>
+      <v-row class="ml-2 mr-2">
+        <v-col cols="12">
+          <PropertiesInput v-model="product.newProduct.properties"/>
         </v-col>
       </v-row>
       <v-row class="mb-2 ml-2 mr-2">
@@ -55,13 +56,16 @@ import {useProductStore} from "@/store/product";
 import {mapActions, mapState} from "pinia";
 import {useClassifierStore} from "@/store/classifier";
 import {useSnackbarStore} from "@/store/snackbars";
-
+import PropertiesInput from "@/components/PropertiesInput";
 
 export default {
   name: 'ProductCreate',
   computed: {
     ...mapState(useProductStore, ['product']),
     ...mapState(useClassifierStore, ['classifiers']),
+  },
+  components: {
+    PropertiesInput,
   },
   async mounted() {
     await this.loadProperties()

@@ -6,25 +6,26 @@
                       variant="underlined"></v-text-field>
       </v-col>
       <v-col cols="6">
+        <v-text-field v-model="product.price" :clearable="!viewMode" :readonly="viewMode"
+                      label="Price" type="number" variant="underlined"></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row class="ml-2 mr-2">
+      <v-col cols="12">
         <v-select v-model="product.productCategoryName" :clearable="!viewMode" :items="classifiers.categories"
                   :readonly="viewMode" item-title="name" item-value="name"
                   label="Product Category" variant="underlined"></v-select>
       </v-col>
     </v-row>
     <v-row class="ml-2 mr-2">
-      <v-col cols="6">
-        <v-text-field v-model="product.properties" :clearable="!viewMode" disabled
-                      label="Properties" variant="underlined"></v-text-field>
-      </v-col>
-      <v-col cols="6">
-        <v-text-field v-model="product.price" :clearable="!viewMode" :readonly="viewMode"
-                      label="Price" type="number" variant="underlined"></v-text-field>
-      </v-col>
-    </v-row>
-    <v-row class="ml-2 mr-2">
       <v-col>
         <v-text-field v-model="product.description" :clearable="!viewMode" :readonly="viewMode"
                       label="Description" variant="underlined"></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row class="ml-2 mr-2">
+      <v-col cols="12">
+        <PropertiesInput v-model="product.properties"/>
       </v-col>
     </v-row>
     <v-row v-if="viewMode" class="ml-2 mr-2">
@@ -66,9 +67,11 @@ import ProductApi from "@/services/ProductApi";
 import {DEFAULT_IMAGE_URL} from "@/utils/imageUtil";
 import router, {PRODUCT_VIEW_ROUTE_NAME} from "@/router";
 import {useSnackbarStore} from "@/store/snackbars";
+import PropertiesInput from "@/components/PropertiesInput.vue";
 
 export default {
   name: 'ProductView',
+  components: {PropertiesInput},
   computed: {
     ...mapState(useClassifierStore, ['classifiers']),
     viewMode() {

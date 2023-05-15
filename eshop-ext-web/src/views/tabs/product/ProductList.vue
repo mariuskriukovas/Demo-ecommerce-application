@@ -39,7 +39,7 @@
     </v-row>
   </v-card>
   <v-card class="mt-2 ml-2 mr-2 mb-2" color="primary" title="Products" variant="outlined">
-    <v-row class="ml-2 mr-2 mb-2">
+    <v-row v-if="isAdmin" class="ml-2 mr-2 mb-2">
       <v-col class="text-right">
         <v-btn class="text-right" color="primary" outlined @click="onCreate">
           Create new product
