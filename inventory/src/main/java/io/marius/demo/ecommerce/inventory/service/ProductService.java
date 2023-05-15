@@ -53,7 +53,6 @@ public class ProductService {
     Product product = productMapper.toProductEntity(productInput);
     product.setProductCategory(findProductCategory(productInput));
     product.setProductFiles(loadProductFiles(productInput, product));
-    setProductPropertyReferences(product);
 
     product = productRepository.save(product);
     return String.format("Successfully saved product with id: %d", product.getId());
@@ -70,7 +69,6 @@ public class ProductService {
 
     removeOldImages(product);
     product.setProductFiles(loadProductFiles(productInput, product));
-    setProductPropertyReferences(product);
 
     product = productRepository.save(product);
     return String.format("Successfully updated product with id: %d", product.getId());
@@ -122,12 +120,6 @@ public class ProductService {
           .collect(Collectors.toList());
     }
     return null;
-  }
-
-  private void setProductPropertyReferences(Product product) {
-    if (product.getProperties() != null) {
-      product.getProperties().forEach(e -> e.setProduct(product));
-    }
   }
 
   private void removeOldImages(Product product) {
