@@ -61,26 +61,3 @@ type Query{
     allProducts(filter: ProductFilter!): [ProductView]
     allInventoryItems(filter: InventoryItemsFilter!): [InventoryItem]
 }
-
-# Mutation
-#
-#scalar Upload
-#
-#input ProductInput{
-#    id: Int
-#    name: String!
-#    price: Float
-#    description: String
-#    productCategory: String
-#    properties: [PropertyInput]
-#    file:  Upload
-#}
-#input PropertyInput{
-#    id: Int
-#    name: String!
-#    description: String
-#}
-#
-#type Mutation {
-#    createProduct(product: ProductInput):String
-#}
