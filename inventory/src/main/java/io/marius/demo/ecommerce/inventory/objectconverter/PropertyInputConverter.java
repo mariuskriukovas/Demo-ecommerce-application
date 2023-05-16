@@ -15,8 +15,7 @@ public class PropertyInputConverter implements Converter<String, PropertyInput> 
     try {
       return objectMapper.readValue(from, PropertyInput.class);
     } catch (JsonProcessingException e) {
-      e.printStackTrace();
-      throw new ValidationException("Unable to deserialize properties field");
+      throw new ValidationException("Unable to deserialize properties field", e);
     }
   }
 }
