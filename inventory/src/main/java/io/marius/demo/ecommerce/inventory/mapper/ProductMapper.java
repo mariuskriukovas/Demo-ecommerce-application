@@ -16,7 +16,7 @@ public abstract class ProductMapper {
   @Autowired ProductPropertyRepository productPropertyRepository;
 
   @Mapping(target = "productCategory", ignore = true)
-  @Mapping(target = "properties", expression = "java(addProduct(product, input))")
+  @Mapping(target = "properties", expression = "java(addProperties(product, input))")
   public abstract Product toProductEntity(ProductInput input);
 
   @Mapping(target = "productCategory", ignore = true)
