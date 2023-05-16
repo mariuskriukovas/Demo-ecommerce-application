@@ -11,6 +11,7 @@ import io.marius.demo.ecommerce.inventory.entity.QProductProperty;
 import io.marius.demo.ecommerce.inventory.mapper.ProductMapper;
 import io.marius.demo.ecommerce.inventory.model.payload.ProductInput;
 import io.marius.demo.ecommerce.inventory.model.query.ProductFilter;
+import io.marius.demo.ecommerce.inventory.model.view.ProductView;
 import io.marius.demo.ecommerce.inventory.repository.ProductCategoryRepository;
 import io.marius.demo.ecommerce.inventory.repository.ProductRepository;
 import io.marius.demo.ecommerce.inventory.service.predicates.ProductPredicate;
@@ -18,7 +19,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.validation.ValidationException;
 import java.io.IOException;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +52,7 @@ public class ProductService {
   public String createProduct(ProductInput productInput) {
     Product product = productMapper.toProductEntity(productInput);
     product.setProductCategory(findProductCategory(productInput));
-    product.setProductFiles(loadProductFiles(productInput, product));
+    product.setProductFiles(loadProductFiles(productInput.getFiles(), product));
 
     product = productRepository.save(product);
     return String.format("Successfully saved product with id: %d", product.getId());
@@ -60,29 +60,40 @@ public class ProductService {
 
   @Transactional
   public String updateProduct(Long id, ProductInput productInput) {
-    Product product =
-        productRepository
-            .findById(id)
-            .orElseThrow(() -> new ValidationException("Product not found !"));
+    Product product = findProductById(id);
+
     productMapper.update(product, productInput);
     product.setProductCategory(findProductCategory(productInput));
 
     removeOldImages(product);
-    product.setProductFiles(loadProductFiles(productInput, product));
+    product.setProductFiles(loadProductFiles(productInput.getFiles(), product));
 
     product = productRepository.save(product);
     return String.format("Successfully updated product with id: %d", product.getId());
   }
 
-  @Transactional(readOnly = true)
-  public Product findProduct(Long id) {
-    return productRepository
-        .findById(id)
-        .orElseThrow(() -> new NoSuchElementException("Product not found"));
+  @Transactional
+  public String uploadProductFiles(Long id, List<MultipartFile> files) {
+    Product product = findProductById(id);
+    List<ProductFile> productFiles = loadProductFiles(files, product);
+
+    if (product.getProductFiles() == null) {
+      product.setProductFiles(productFiles);
+    } else if (productFiles != null) {
+      product.getProductFiles().addAll(productFiles);
+    }
+
+    productRepository.save(product);
+    return String.format("Successfully updated files for product with id: %d", id);
   }
 
   @Transactional(readOnly = true)
-  public List<Product> findAllProducts(ProductFilter filter) {
+  public ProductView findProduct(Long id) {
+    return productMapper.toProductView(findProductById(id));
+  }
+
+  @Transactional(readOnly = true)
+  public List<ProductView> findAllProducts(ProductFilter filter) {
     QProduct product = QProduct.product;
     QProductProperty productProperty = QProductProperty.productProperty;
 
@@ -96,7 +107,13 @@ public class ProductService {
 
       query.innerJoin(product.properties, productProperty).on(propertyQuery);
     }
-    return query.fetch();
+    return query.fetch().stream().map(productMapper::toProductView).collect(Collectors.toList());
+  }
+
+  private Product findProductById(Long id) {
+    return productRepository
+        .findById(id)
+        .orElseThrow(() -> new ValidationException("Product not found !"));
   }
 
   private ProductCategory findProductCategory(ProductInput productInput) {
@@ -105,9 +122,9 @@ public class ProductService {
         .orElseThrow(() -> new ValidationException("Product category not found"));
   }
 
-  private List<ProductFile> loadProductFiles(ProductInput productInput, Product product) {
-    if (isFieldValid(productInput.getFiles())) {
-      return productInput.getFiles().stream()
+  private List<ProductFile> loadProductFiles(List<MultipartFile> files, Product product) {
+    if (isFieldValid(files)) {
+      return files.stream()
           .map(
               (MultipartFile multipartFile) -> {
                 try {

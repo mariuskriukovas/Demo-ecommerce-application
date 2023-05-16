@@ -6,6 +6,8 @@ import io.marius.demo.ecommerce.inventory.entity.ProductFile;
 import io.marius.demo.ecommerce.inventory.entity.ProductProperty;
 import io.marius.demo.ecommerce.inventory.model.payload.ProductInput;
 import io.marius.demo.ecommerce.inventory.model.payload.PropertyInput;
+import io.marius.demo.ecommerce.inventory.model.view.FileView;
+import io.marius.demo.ecommerce.inventory.model.view.ProductView;
 import io.marius.demo.ecommerce.inventory.repository.ProductPropertyRepository;
 import java.util.List;
 import org.mapstruct.*;
@@ -15,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class ProductMapper {
   @Autowired ProductPropertyRepository productPropertyRepository;
 
+  public abstract ProductView toProductView(Product entity);
+
   @Mapping(target = "productCategory", ignore = true)
   @Mapping(target = "properties", expression = "java(addProperties(product, input))")
   public abstract Product toProductEntity(ProductInput input);
@@ -22,6 +26,20 @@ public abstract class ProductMapper {
   @Mapping(target = "productCategory", ignore = true)
   @Mapping(target = "properties", expression = "java(updateProperties(entity, input))")
   public abstract void update(@MappingTarget Product entity, ProductInput input);
+
+  public abstract ProductProperty toProductProperty(PropertyInput input);
+
+  public abstract void update(@MappingTarget ProductProperty entity, PropertyInput input);
+
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "product", source = "product")
+  @Mapping(target = "file", source = "file")
+  public abstract ProductFile toProductFile(Product product, File file);
+
+  @Mapping(target = "fileName", source = "entity.file.fileName")
+  @Mapping(target = "key", source = "entity.file.key")
+  @Mapping(target = "s3Url", source = "entity.file.s3Url")
+  public abstract FileView toFileView(ProductFile entity);
 
   protected List<ProductProperty> addProperties(Product entity, ProductInput input) {
     List<ProductProperty> properties = null;
@@ -74,13 +92,4 @@ public abstract class ProductMapper {
 
     return entity.getProperties();
   }
-
-  public abstract ProductProperty toProductProperty(PropertyInput input);
-
-  public abstract void update(@MappingTarget ProductProperty entity, PropertyInput input);
-
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "product", source = "product")
-  @Mapping(target = "file", source = "file")
-  public abstract ProductFile toProductFile(Product product, File file);
 }
