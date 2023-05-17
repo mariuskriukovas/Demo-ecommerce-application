@@ -1,15 +1,32 @@
 <template>
   <v-card class="ml-2 mr-2" title="Properties">
-    <v-row class="ml-2 mr-2 mt-2 mb-2" justify='end'>
-      <v-btn :disabled="readonly" class="mr-2" color="primary" @click="addItem">
-        +
-      </v-btn>
-      <v-btn :disabled="readonly" color="primary" @click="removeItem">
-        -
-      </v-btn>
+    <v-row v-if="!readonly" class="ml-2 mr-2 mt-2 mb-2" justify='end'>
+      <v-icon
+        class="mr-2"
+        color="primary"
+        icon="mdi-plus"
+        size="large"
+        @click="addItem"
+      ></v-icon>
+      <v-icon
+        class="mr-2"
+        color="primary"
+        icon="mdi-minus"
+        size="large"
+        @click="removeItem"
+      ></v-icon>
     </v-row>
     <template v-for="(item, index) in items" :key="index">
-      <v-row class="ml-2 mr-2">
+      <v-row v-if="readonly" class="ml-2 mr-2">
+        <v-col cols="6">
+          <v-text-field v-model="item['name']" label="Name" readonly variant="underlined"></v-text-field>
+        </v-col>
+        <v-col cols="6">
+          <v-text-field v-model="item['description']" label="Description" readonly
+                        variant="underlined"></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row v-else class="ml-2 mr-2">
         <v-col cols="5">
           <v-text-field v-model="item['name']" :readonly="readonly" label="Name" variant="underlined"></v-text-field>
         </v-col>
