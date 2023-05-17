@@ -4,7 +4,8 @@ import io.marius.demo.ecommerce.inventory.entity.File;
 import io.marius.demo.ecommerce.inventory.entity.Product;
 import io.marius.demo.ecommerce.inventory.entity.ProductFile;
 import io.marius.demo.ecommerce.inventory.entity.ProductProperty;
-import io.marius.demo.ecommerce.inventory.model.payload.ProductInput;
+import io.marius.demo.ecommerce.inventory.model.payload.BaseProductPayload;
+import io.marius.demo.ecommerce.inventory.model.payload.ProductCreationPayload;
 import io.marius.demo.ecommerce.inventory.model.payload.PropertyInput;
 import io.marius.demo.ecommerce.inventory.model.view.FileView;
 import io.marius.demo.ecommerce.inventory.model.view.ProductView;
@@ -20,12 +21,12 @@ public abstract class ProductMapper {
   public abstract ProductView toProductView(Product entity);
 
   @Mapping(target = "productCategory", ignore = true)
-  @Mapping(target = "properties", expression = "java(addProperties(product, input))")
-  public abstract Product toProductEntity(ProductInput input);
+  @Mapping(target = "properties", expression = "java(addProperties(product, payload))")
+  public abstract Product toProductEntity(ProductCreationPayload payload);
 
   @Mapping(target = "productCategory", ignore = true)
-  @Mapping(target = "properties", expression = "java(updateProperties(entity, input))")
-  public abstract void update(@MappingTarget Product entity, ProductInput input);
+  @Mapping(target = "properties", expression = "java(updateProperties(entity, payload))")
+  public abstract void update(@MappingTarget Product entity, BaseProductPayload payload);
 
   public abstract ProductProperty toProductProperty(PropertyInput input);
 
@@ -41,11 +42,11 @@ public abstract class ProductMapper {
   @Mapping(target = "s3Url", source = "entity.file.s3Url")
   public abstract FileView toFileView(ProductFile entity);
 
-  protected List<ProductProperty> addProperties(Product entity, ProductInput input) {
+  protected List<ProductProperty> addProperties(Product entity, ProductCreationPayload payload) {
     List<ProductProperty> properties = null;
-    if (input.getProperties() != null) {
+    if (payload.getProperties() != null) {
       properties =
-          input.getProperties().stream()
+          payload.getProperties().stream()
               .map(this::toProductProperty)
               .peek(e -> e.setProduct(entity))
               .toList();
@@ -54,11 +55,11 @@ public abstract class ProductMapper {
     return properties;
   }
 
-  protected List<ProductProperty> updateProperties(Product entity, ProductInput input) {
+  protected List<ProductProperty> updateProperties(Product entity, BaseProductPayload payload) {
     List<ProductProperty> properties = null;
-    if (input.getProperties() != null) {
+    if (payload.getProperties() != null) {
       properties =
-          input.getProperties().stream()
+          payload.getProperties().stream()
               .map(
                   e -> {
                     ProductProperty property = null;

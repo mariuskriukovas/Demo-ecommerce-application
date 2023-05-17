@@ -9,7 +9,8 @@ import io.marius.demo.ecommerce.inventory.entity.*;
 import io.marius.demo.ecommerce.inventory.entity.QProduct;
 import io.marius.demo.ecommerce.inventory.entity.QProductProperty;
 import io.marius.demo.ecommerce.inventory.mapper.ProductMapper;
-import io.marius.demo.ecommerce.inventory.model.payload.ProductInput;
+import io.marius.demo.ecommerce.inventory.model.payload.BaseProductPayload;
+import io.marius.demo.ecommerce.inventory.model.payload.ProductCreationPayload;
 import io.marius.demo.ecommerce.inventory.model.query.ProductFilter;
 import io.marius.demo.ecommerce.inventory.model.view.ProductView;
 import io.marius.demo.ecommerce.inventory.repository.ProductCategoryRepository;
@@ -49,24 +50,21 @@ public class ProductService {
   }
 
   @Transactional
-  public String createProduct(ProductInput productInput) {
-    Product product = productMapper.toProductEntity(productInput);
-    product.setProductCategory(findProductCategory(productInput));
-    product.setProductFiles(loadProductFiles(productInput.getFiles(), product));
+  public String createProduct(ProductCreationPayload payload) {
+    Product product = productMapper.toProductEntity(payload);
+    product.setProductCategory(findProductCategory(payload));
+    product.setProductFiles(loadProductFiles(payload.getFiles(), product));
 
     product = productRepository.save(product);
     return String.format("Successfully saved product with id: %d", product.getId());
   }
 
   @Transactional
-  public String updateProduct(Long id, ProductInput productInput) {
+  public String updateProduct(Long id, BaseProductPayload payload) {
     Product product = findProductById(id);
 
-    productMapper.update(product, productInput);
-    product.setProductCategory(findProductCategory(productInput));
-
-    removeOldImages(product);
-    product.setProductFiles(loadProductFiles(productInput.getFiles(), product));
+    productMapper.update(product, payload);
+    product.setProductCategory(findProductCategory(payload));
 
     product = productRepository.save(product);
     return String.format("Successfully updated product with id: %d", product.getId());
@@ -116,9 +114,9 @@ public class ProductService {
         .orElseThrow(() -> new ValidationException("Product not found !"));
   }
 
-  private ProductCategory findProductCategory(ProductInput productInput) {
+  private ProductCategory findProductCategory(BaseProductPayload payload) {
     return productCategoryRepository
-        .findByName(productInput.getProductCategoryName())
+        .findByName(payload.getProductCategory().getName())
         .orElseThrow(() -> new ValidationException("Product category not found"));
   }
 
@@ -137,18 +135,5 @@ public class ProductService {
           .collect(Collectors.toList());
     }
     return null;
-  }
-
-  private void removeOldImages(Product product) {
-    product.getProductFiles().stream()
-        .map(ProductFile::getFile)
-        .forEach(
-            file -> {
-              try {
-                fileService.removeFile(file);
-              } catch (IOException e) {
-                throw new ValidationException("Error deleting images");
-              }
-            });
   }
 }
