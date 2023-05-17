@@ -174,7 +174,7 @@ export default {
     getItemSource(item) {
       const files = item?.raw?.productFiles
       if (files && files.length > 0) {
-        return files[0]?.file?.s3Url // primary product image
+        return files[0]?.s3Url // primary product image
       } else {
         return DEFAULT_IMAGE_URL
       }

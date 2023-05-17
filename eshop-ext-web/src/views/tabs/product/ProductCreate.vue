@@ -16,8 +16,8 @@
       </v-row>
       <v-row class="ml-2 mr-2">
         <v-col cols="12">
-          <v-select v-model="product.newProduct.productCategoryName" :items="classifiers.categories" clearable
-                    item-title="name" item-value="name" label="Product Category"
+          <v-select v-model="product.newProduct.productCategory" :items="classifiers.categories" clearable
+                    item-title="name" label="Product Category" return-object
                     variant="underlined"></v-select>
         </v-col>
       </v-row>
@@ -87,7 +87,10 @@ export default {
     },
     async onCreate() {
       const successMessage = await this.createProduct(this.files)
-      this.openSnackbar(successMessage)
+      if (successMessage) {
+        this.openSnackbar(successMessage)
+        this.onClose()
+      }
     },
   },
 }

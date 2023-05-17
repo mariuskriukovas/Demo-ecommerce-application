@@ -2,7 +2,6 @@ import ApiInterceptor from "@/plugins/api/ApiInterceptor";
 import * as gql from 'gql-query-builder'
 import {omitBy} from "lodash";
 
-
 const api = ApiInterceptor("inventory");
 
 export default {
@@ -15,9 +14,9 @@ export default {
 
     const query = gql.query([{
       operation: "allProducts", fields: ["id", "name", "price", "description", {
-        productCategory: ["id", "name"], properties: ["id", "name", "description"], productFiles: [{
-          file: ["s3Url"],
-        }]
+        productCategory: ["id", "name"],
+        properties: ["id", "name", "description"],
+        productFiles: ["id", "key", "fileName", "s3Url"],
       }], variables: {
         filter: {
           name: "filter", type: "ProductFilter!", value: validFilters,
@@ -29,9 +28,9 @@ export default {
 
     const query = gql.query([{
       operation: "product", fields: ["id", "name", "price", "description", {
-        productCategory: ["id", "name"], properties: ["id", "name", "description"], productFiles: [{
-          file: ["s3Url"],
-        }]
+        productCategory: ["id", "name"],
+        properties: ["id", "name", "description"],
+        productFiles: ["id", "key", "fileName", "s3Url"],
       }], variables: {
         id: {
           name: "id", type: "Int!", value: id,
@@ -42,6 +41,8 @@ export default {
   }, async createProduct(data = {}) {
     return (await api.post("products", api.mapToFormData(data), api.fileHeaders))?.data
   }, async updateProduct(id, data = {}) {
-    return (await api.put(`products\\${id}`, api.mapToFormData(data), api.fileHeaders))?.data
+    return (await api.put(`products/${id}`, data))?.data
+  }, async uploadProductFiles(id, files = []) {
+    return (await api.post(`products/${id}/files`, api.mapToFormData({files}), api.fileHeaders))?.data
   },
 };

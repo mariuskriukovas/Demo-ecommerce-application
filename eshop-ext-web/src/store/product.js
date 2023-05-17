@@ -7,7 +7,7 @@ export const useProductStore = defineStore('product', {
       filter: {
         name: null, description: null, category: null, priceFrom: null, priceTo: null, properties: null,
       }, newProduct: {
-        name: null, description: null, productCategoryName: null, price: null, properties: [],
+        name: null, description: null, productCategory: null, price: null, properties: [],
       }, isCreateProductModalVisible: false,
     },
   }), getters: {}, actions: {

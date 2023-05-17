@@ -12,9 +12,9 @@
     </v-row>
     <v-row class="ml-2 mr-2">
       <v-col cols="12">
-        <v-select v-model="product.productCategoryName" :clearable="!viewMode" :items="classifiers.categories"
-                  :readonly="viewMode" item-title="name" item-value="name"
-                  label="Product Category" variant="underlined"></v-select>
+        <v-select v-model="product.productCategory" :clearable="!viewMode" :items="classifiers.categories"
+                  :readonly="viewMode" item-title="name" label="Product Category"
+                  return-object variant="underlined"></v-select>
       </v-col>
     </v-row>
     <v-row class="ml-2 mr-2">
@@ -25,27 +25,11 @@
     </v-row>
     <v-row class="ml-2 mr-2">
       <v-col cols="12">
-        <PropertiesInput v-model="product.properties"/>
+        <PropertiesInput v-model="product.properties" :readonly="viewMode"/>
       </v-col>
     </v-row>
-    <v-row v-if="viewMode" class="ml-2 mr-2">
-      <v-carousel v-model="activeIndex" show-arrows="hover">
-        <v-carousel-item
-          v-for="(item,i) in product.productFiles"
-          :key="i"
-          :src="item.file.s3Url"
-          :width="500"
-          aspect-ratio="16/9"
-          class="ma-auto"
-          cover
-        >
-        </v-carousel-item>
-      </v-carousel>
-    </v-row>
-    <v-row v-else class="ml-2 mr-2">
-      <v-col>
-        <v-file-input v-model="product.files" clearable label="Files" multiple variant="underlined"></v-file-input>
-      </v-col>
+    <v-row class="ml-2 mr-2">
+      <ImageCarousel v-model="product.productFiles" :readonly="viewMode" :refresh="loadProduct"></ImageCarousel>
     </v-row>
     <v-row class="mb-2 ml-2 mr-2">
       <v-col class="text-right mr-2">
@@ -64,14 +48,14 @@
 import {mapActions, mapState} from "pinia";
 import {useClassifierStore} from "@/store/classifier";
 import ProductApi from "@/services/ProductApi";
-import {DEFAULT_IMAGE_URL} from "@/utils/imageUtil";
 import router, {PRODUCT_VIEW_ROUTE_NAME} from "@/router";
 import {useSnackbarStore} from "@/store/snackbars";
 import PropertiesInput from "@/components/PropertiesInput.vue";
+import ImageCarousel from "@/components/ImageCarousel.vue";
 
 export default {
   name: 'ProductView',
-  components: {PropertiesInput},
+  components: {PropertiesInput, ImageCarousel},
   computed: {
     ...mapState(useClassifierStore, ['classifiers']),
     viewMode() {
@@ -90,11 +74,10 @@ export default {
       product: {
         name: null,
         description: null,
-        productCategoryName: null,
+        productCategory: null,
         price: null,
         properties: null,
         productFiles: [],
-        files: []
       },
     };
   },
@@ -120,21 +103,17 @@ export default {
     async loadProduct() {
       const {id} = this.$route.params
       const {data} = await ProductApi.getProductById(id)
-      this.product = {...this.product, ...data?.product, productCategoryName: data?.product?.productCategory?.name}
-
-      if (this.product.productFiles.length < 1) {
-        data.product.productFiles.push({
-          file: {
-            s3Url: DEFAULT_IMAGE_URL
-          }
-        })
-      }
+      this.product = {...this.product, ...data?.product}
     },
     async onSave() {
       const {id} = this.$route.params
-      const data = await ProductApi.updateProduct(id, this.product)
-      this.openSnackbar(data)
-    }
+      const message = await ProductApi.updateProduct(id, this.product)
+
+      if (message) {
+        this.openSnackbar(message)
+        await this.loadProduct()
+      }
+    },
   },
 }
 </script>
