@@ -10,11 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("ProductFileService")
 public class ProductFileService {
   private final ProductFileRepository productFileRepository;
-  private final FileService fileService;
+  private final ImageService imageService;
 
-  public ProductFileService(ProductFileRepository productFileRepository, FileService fileService) {
+  public ProductFileService(
+      ProductFileRepository productFileRepository, ImageService imageService) {
     this.productFileRepository = productFileRepository;
-    this.fileService = fileService;
+    this.imageService = imageService;
   }
 
   @Transactional
@@ -25,7 +26,7 @@ public class ProductFileService {
             .orElseThrow(() -> new ValidationException("Product file not found !"));
 
     try {
-      fileService.removeFile(productFile.getFile());
+      imageService.removeFile(productFile.getFileMetadata());
     } catch (IOException e) {
       throw new ValidationException("Error deleting images");
     }

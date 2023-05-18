@@ -32,7 +32,7 @@ public class ProductService {
   private final JPAQueryFactory queryFactory;
   private final ProductMapper productMapper;
   private final ProductPredicate productPredicate;
-  private final FileService fileService;
+  private final ImageService imageService;
 
   public ProductService(
       ProductRepository productRepository,
@@ -40,13 +40,13 @@ public class ProductService {
       EntityManager entityManager,
       ProductMapper productMapper,
       ProductPredicate productPredicate,
-      FileService fileService) {
+      ImageService imageService) {
     this.productRepository = productRepository;
     this.productCategoryRepository = productCategoryRepository;
     this.queryFactory = new JPAQueryFactory(entityManager);
     this.productMapper = productMapper;
     this.productPredicate = productPredicate;
-    this.fileService = fileService;
+    this.imageService = imageService;
   }
 
   @Transactional
@@ -126,7 +126,7 @@ public class ProductService {
           .map(
               (MultipartFile multipartFile) -> {
                 try {
-                  return fileService.saveFile(multipartFile);
+                  return imageService.saveFile(multipartFile);
                 } catch (IOException e) {
                   throw new ValidationException("Error uploading images");
                 }
