@@ -69,9 +69,8 @@
       <template v-slot:[`item.productFiles`]="{ item }">
         <v-img
           :src="getItemSource(item)"
-          :width="300"
-          aspect-ratio="16/9"
-          cover
+          height="250px"
+          width="250px"
         ></v-img>
       </template>
       <template v-slot:[`item.actions`]="{ item }">

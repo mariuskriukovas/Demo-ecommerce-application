@@ -1,5 +1,5 @@
 <template>
-  <v-carousel v-if="readonly" v-model="activeIndex" hide-delimiters show-arrows="hover">
+  <v-carousel v-if="readonly" v-model="activeIndex" hide-delimiters show-arrows="hover" height="500px">
     <template v-if="hasItems">
       <v-carousel-item
         v-for="(item,i) in items"
@@ -9,13 +9,12 @@
           border="md"
           class="pa-6 text-white mx-auto"
           height="500px"
-          width="600px"
+          width="500px"
         >
           <v-img
             :src="item.s3Url"
-            aspect-ratio="16/9"
-            cover
-            max-height="500px"
+            height="500px"
+            width="500px"
           ></v-img>
         </v-sheet>
       </v-carousel-item>
@@ -25,20 +24,20 @@
         <v-sheet
           border="md"
           class="pa-6 text-white mx-auto"
-          height="500px"
-          width="600px"
+          height="600px"
+          width="500px"
         >
           <v-img
             :src="DEFAULT_IMAGE_URL"
-            aspect-ratio="16/9"
             cover
-            max-height="450px"
+            height="500px"
+            width="500px"
           ></v-img>
         </v-sheet>
       </v-carousel-item>
     </template>
   </v-carousel>
-  <v-carousel v-else v-model="activeIndex" hide-delimiters show-arrows="hover">
+  <v-carousel v-else v-model="activeIndex" hide-delimiters show-arrows="hover"  height="600px">
     <v-carousel-item
       v-for="(item,i) in items"
       :key="i"
@@ -46,14 +45,13 @@
       <v-sheet
         border="md"
         class="pa-6 text-white mx-auto"
-        height="500px"
-        width="600px"
+        height="600px"
+        width="500px"
       >
         <v-img
           :src="item.s3Url"
-          aspect-ratio="16/9"
-          cover
-          max-height="400px"
+          height="500px"
+          width="500px"
         ></v-img>
         <v-btn
           block
@@ -71,8 +69,8 @@
       <v-sheet
         border="md"
         class="pa-6 text-white mx-auto"
-        height="500px"
-        width="600px"
+        height="600px"
+        width="500px"
       >
         <v-row align="center" justify="center" style="height: 100%">
           <v-col>
