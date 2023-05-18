@@ -1,6 +1,6 @@
 package io.marius.demo.ecommerce.inventory.mapper;
 
-import io.marius.demo.ecommerce.inventory.entity.File;
+import io.marius.demo.ecommerce.inventory.entity.FileMetadata;
 import io.marius.demo.ecommerce.inventory.entity.Product;
 import io.marius.demo.ecommerce.inventory.entity.ProductFile;
 import io.marius.demo.ecommerce.inventory.entity.ProductProperty;
@@ -34,12 +34,12 @@ public abstract class ProductMapper {
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "product", source = "product")
-  @Mapping(target = "file", source = "file")
-  public abstract ProductFile toProductFile(Product product, File file);
+  @Mapping(target = "fileMetadata", source = "fileMetadata")
+  public abstract ProductFile toProductFile(Product product, FileMetadata fileMetadata);
 
-  @Mapping(target = "fileName", source = "entity.file.fileName")
-  @Mapping(target = "key", source = "entity.file.key")
-  @Mapping(target = "s3Url", source = "entity.file.s3Url")
+  @Mapping(target = "fileName", source = "entity.fileMetadata.fileName")
+  @Mapping(target = "key", source = "entity.fileMetadata.key")
+  @Mapping(target = "s3Url", source = "entity.fileMetadata.s3Url")
   public abstract FileView toFileView(ProductFile entity);
 
   protected List<ProductProperty> addProperties(Product entity, ProductCreationPayload payload) {
