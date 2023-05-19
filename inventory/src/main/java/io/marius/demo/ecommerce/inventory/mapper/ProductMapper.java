@@ -38,7 +38,7 @@ public abstract class ProductMapper {
   public abstract ProductFile toProductFile(Product product, FileMetadata fileMetadata);
 
   @Mapping(target = "fileName", source = "entity.fileMetadata.fileName")
-  @Mapping(target = "key", source = "entity.fileMetadata.key")
+  @Mapping(target = "key", source = "entity.fileMetadata.fileKey")
   @Mapping(target = "s3Url", source = "entity.fileMetadata.s3Url")
   public abstract FileView toFileView(ProductFile entity);
 

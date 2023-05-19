@@ -49,7 +49,7 @@ public class ImageService {
 
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void removeFile(FileMetadata fileMetadata) throws SdkClientException, IOException {
-    s3Service.deleteFileByKey(fileMetadata.getKey());
+    s3Service.deleteFileByKey(fileMetadata.getFileKey());
     fileRepository.delete(fileMetadata);
   }
 
@@ -68,7 +68,7 @@ public class ImageService {
     return FileMetadata.FileMetadataBuilder.aFileMetadata()
         .withFileName(originalName)
         .withExtension(extension)
-        .withKey(uniqName)
+        .withFileKey(uniqName)
         .withS3Url(s3Url)
         .build();
   }

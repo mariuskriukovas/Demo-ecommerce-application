@@ -31,7 +31,7 @@ public class ImageTestHelper {
   public FileMetadata getTestFileMetadata() {
     return FileMetadata.FileMetadataBuilder.aFileMetadata()
         .withFileName("nokia_test.png")
-        .withKey("2f174cea-f566-11ed-a05b-0242ac120003.png")
+        .withFileKey("2f174cea-f566-11ed-a05b-0242ac120003.png")
         .withExtension("png")
         .withS3Url(
             "https://test_bucket.test_zone.amazonaws.com/2f174cea-f566-11ed-a05b-0242ac120003.png")

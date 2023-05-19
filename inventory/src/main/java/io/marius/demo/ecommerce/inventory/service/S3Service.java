@@ -43,7 +43,7 @@ public class S3Service {
     data.setContentLength(imageBuffer.length);
 
     return s3client.putObject(
-        fileBucketName, metadata.getKey(), new ByteArrayInputStream(imageBuffer), data);
+        fileBucketName, metadata.getFileKey(), new ByteArrayInputStream(imageBuffer), data);
   }
 
   public void deleteFileByKey(String key) {
