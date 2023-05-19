@@ -2,11 +2,25 @@ package io.marius.demo.ecommerce.inventory.helper;
 
 import io.marius.demo.ecommerce.inventory.entity.FileMetadata;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 public class ImageTestHelper {
+  public MultipartFile getTestMultipartFile() throws IOException {
+    BufferedImage testImage = getTestImage();
+
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    ImageIO.write(testImage, "png", baos);
+    baos.flush();
+
+    return new MockMultipartFile(
+        "nokia_test.png", "nokia_test.png", "image/png", baos.toByteArray());
+  }
+
   public BufferedImage getTestImage() throws IOException {
     String testImagePath = "src/test/resources/nokia_test.png";
 
