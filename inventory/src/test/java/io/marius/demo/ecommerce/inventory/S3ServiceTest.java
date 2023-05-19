@@ -19,28 +19,22 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
-@RunWith(MockitoJUnitRunner.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 class S3ServiceTest {
-  @Mock AmazonS3 s3client;
-  @Mock S3Service s3Service;
-  private ImageTestHelper imageTestHelper;
-  private String testBucketName;
-  private String testS3Zone;
+  private final ImageTestHelper imageTestHelper = new ImageTestHelper();
+  private final String testBucketName = "test-bucket";
+  private final String testS3Zone = "test_zone.amazonaws.com";
+  private AmazonS3 s3client;
+  private S3Service s3Service;
 
   @BeforeAll
   public void setUp() {
-    imageTestHelper = new ImageTestHelper();
-    this.testBucketName = "test-bucket";
-    this.testS3Zone = "test_zone.amazonaws.com";
-
     s3client = Mockito.mock(AmazonS3.class);
 
     when(s3client.listBuckets()).thenReturn(List.of(new Bucket(testBucketName)));
