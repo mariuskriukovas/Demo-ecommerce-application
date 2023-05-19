@@ -1,7 +1,6 @@
 package io.marius.demo.ecommerce.inventory.service;
 
 import com.amazonaws.SdkClientException;
-import com.amazonaws.services.s3.AmazonS3;
 import io.marius.demo.ecommerce.inventory.entity.FileMetadata;
 import io.marius.demo.ecommerce.inventory.repository.FileRepository;
 import jakarta.validation.ValidationException;
@@ -25,7 +24,7 @@ public class ImageService {
   private final S3Service s3Service;
   private final FileRepository fileRepository;
 
-  public ImageService(FileRepository fileRepository, AmazonS3 amazonS3Client, S3Service s3Service) {
+  public ImageService(FileRepository fileRepository, S3Service s3Service) {
     this.fileRepository = fileRepository;
     this.s3Service = s3Service;
   }

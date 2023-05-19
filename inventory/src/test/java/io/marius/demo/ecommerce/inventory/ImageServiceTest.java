@@ -15,12 +15,12 @@ import io.marius.demo.ecommerce.inventory.service.S3Service;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,9 +28,17 @@ import org.springframework.web.multipart.MultipartFile;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ImageServiceTest {
   private final ImageTestHelper imageTestHelper = new ImageTestHelper();
-  private @Mock S3Service s3Service;
-  private @Mock FileRepository fileRepository;
-  private @InjectMocks ImageService imageService;
+  private S3Service s3Service;
+  private FileRepository fileRepository;
+  private ImageService imageService;
+
+  @BeforeAll
+  public void setUp() {
+    fileRepository = Mockito.mock(FileRepository.class);
+    s3Service = Mockito.mock(S3Service.class);
+
+    imageService = new ImageService(fileRepository, s3Service);
+  }
 
   @Test
   public void testSaveFile() throws IOException {
@@ -63,12 +71,12 @@ class ImageServiceTest {
     assertEquals(resultMetadata.getFileName(), "nokia_test.png");
     assertEquals(resultMetadata.getExtension(), "png");
 
-    String keyUid = resultMetadata.getKey().replace(".png", "");
+    String keyUid = resultMetadata.getFileKey().replace(".png", "");
     assertEquals(UUID.fromString(keyUid).toString(), keyUid);
     assertEquals(
         resultMetadata.getS3Url(),
         String.format(
-            "%s/%s", "https://test-bucket.test_zone.amazonaws.com", resultMetadata.getKey()));
+            "%s/%s", "https://test-bucket.test_zone.amazonaws.com", resultMetadata.getFileKey()));
   }
 
   @Test
