@@ -3,8 +3,8 @@ CREATE TABLE inventory.file_metadata
     id             bigserial PRIMARY KEY,
     file_name      varchar(500) NOT NULL,
     file_extension varchar(10)  NOT NULL,
-    file_key       varchar(100) NOT NULL,
-    s3_url         varchar(500) NOT NULL
+    file_key       varchar(100) NOT NULL UNIQUE,
+    s3_url         varchar(500) NOT NULL UNIQUE
 );
 
 CREATE TABLE inventory.product_file
