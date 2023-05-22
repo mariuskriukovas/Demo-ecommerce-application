@@ -2,7 +2,7 @@ package io.marius.demo.ecommerce.inventory.service;
 
 import com.amazonaws.SdkClientException;
 import io.marius.demo.ecommerce.inventory.entity.FileMetadata;
-import io.marius.demo.ecommerce.inventory.repository.FileRepository;
+import io.marius.demo.ecommerce.inventory.repository.FileMetadataRepository;
 import jakarta.validation.ValidationException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -22,10 +22,10 @@ public class ImageService {
   private final List<String> SUPPORTED_FILE_EXTENSIONS =
       List.of("gif", "png", "jpeg", "bmp", "wbmp");
   private final S3Service s3Service;
-  private final FileRepository fileRepository;
+  private final FileMetadataRepository fileMetadataRepository;
 
-  public ImageService(FileRepository fileRepository, S3Service s3Service) {
-    this.fileRepository = fileRepository;
+  public ImageService(FileMetadataRepository fileMetadataRepository, S3Service s3Service) {
+    this.fileMetadataRepository = fileMetadataRepository;
     this.s3Service = s3Service;
   }
 
@@ -39,7 +39,7 @@ public class ImageService {
 
     String uniqFilename = String.format("%s.%s", UUID.randomUUID(), extension);
     FileMetadata metadata =
-        fileRepository.save(
+        fileMetadataRepository.save(
             buildFileEntity(uniqFilename, multipartFile.getOriginalFilename(), extension));
 
     s3Service.saveBufferedImageToS3(scaledImage, metadata);
@@ -49,7 +49,7 @@ public class ImageService {
   @Transactional(propagation = Propagation.REQUIRES_NEW)
   public void removeFile(FileMetadata fileMetadata) throws SdkClientException, IOException {
     s3Service.deleteFileByKey(fileMetadata.getFileKey());
-    fileRepository.delete(fileMetadata);
+    fileMetadataRepository.delete(fileMetadata);
   }
 
   private void checkIfFileSupported(String extension) {

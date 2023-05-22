@@ -69,6 +69,7 @@ public class FileMetadata extends BaseEntity {
     private String s3Url;
     private List<ProductFile> productFiles;
     private Long id;
+    private String uid;
 
     private FileMetadataBuilder() {}
 
@@ -106,6 +107,11 @@ public class FileMetadata extends BaseEntity {
       return this;
     }
 
+    public FileMetadataBuilder withUid(String uid) {
+      this.uid = uid;
+      return this;
+    }
+
     public FileMetadata build() {
       FileMetadata fileMetadata = new FileMetadata();
       fileMetadata.setFileName(fileName);
@@ -114,6 +120,7 @@ public class FileMetadata extends BaseEntity {
       fileMetadata.setS3Url(s3Url);
       fileMetadata.setProductFiles(productFiles);
       fileMetadata.setId(id);
+      fileMetadata.setUid(uid);
       return fileMetadata;
     }
   }

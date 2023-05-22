@@ -33,6 +33,7 @@ public abstract class ProductMapper {
   public abstract void update(@MappingTarget ProductProperty entity, PropertyInput input);
 
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "uid", ignore = true)
   @Mapping(target = "product", source = "product")
   @Mapping(target = "fileMetadata", source = "fileMetadata")
   public abstract ProductFile toProductFile(Product product, FileMetadata fileMetadata);
