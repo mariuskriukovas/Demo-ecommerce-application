@@ -9,8 +9,9 @@ VALUES ('81de5e6e-f0c0-11ed-a05b-0242ac120003', 'userA', '$2a$10$XCBUcZPNaKakw5H
        ('81de6454-f0c0-11ed-a05b-0242ac120003', 'userC', '$2a$12$O8B2LDq7egMeD0usZvmHTeIpE4auaAyQbC2GKvn3jWJFBxDdr3N9C',
         'userC@gmail.com');
 
-INSERT INTO account.role (user_id,
+INSERT INTO account.role (uid,
+                          user_id,
                           role)
-VALUES ((select id from account.shop_user where username = 'userA'), 'USER'),
-       ((select id from account.shop_user where username = 'userB'), 'USER'),
-       ((select id from account.shop_user where username = 'userC'), 'ADMIN');
+VALUES ('ee0aabec-f86d-11ed-b67e-0242ac120002', (select id from account.shop_user where username = 'userA'), 'USER'),
+       ('ee0aaf8e-f86d-11ed-b67e-0242ac120002', (select id from account.shop_user where username = 'userB'), 'USER'),
+       ('ee0ab11e-f86d-11ed-b67e-0242ac120002', (select id from account.shop_user where username = 'userC'), 'ADMIN');
