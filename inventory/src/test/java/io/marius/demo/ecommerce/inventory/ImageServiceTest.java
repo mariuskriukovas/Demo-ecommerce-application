@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import io.marius.demo.ecommerce.inventory.entity.FileMetadata;
 import io.marius.demo.ecommerce.inventory.helper.ImageTestHelper;
-import io.marius.demo.ecommerce.inventory.repository.FileRepository;
+import io.marius.demo.ecommerce.inventory.repository.FileMetadataRepository;
 import io.marius.demo.ecommerce.inventory.service.ImageService;
 import io.marius.demo.ecommerce.inventory.service.S3Service;
 import java.awt.image.BufferedImage;
@@ -29,15 +29,15 @@ import org.springframework.web.multipart.MultipartFile;
 class ImageServiceTest {
   private final ImageTestHelper imageTestHelper = new ImageTestHelper();
   private S3Service s3Service;
-  private FileRepository fileRepository;
+  private FileMetadataRepository fileMetadataRepository;
   private ImageService imageService;
 
   @BeforeAll
   public void setUp() {
-    fileRepository = Mockito.mock(FileRepository.class);
+    fileMetadataRepository = Mockito.mock(FileMetadataRepository.class);
     s3Service = Mockito.mock(S3Service.class);
 
-    imageService = new ImageService(fileRepository, s3Service);
+    imageService = new ImageService(fileMetadataRepository, s3Service);
   }
 
   @Test
@@ -47,7 +47,7 @@ class ImageServiceTest {
     ArgumentCaptor<BufferedImage> bufferedImageCaptor =
         ArgumentCaptor.forClass(BufferedImage.class);
 
-    when(fileRepository.save(any()))
+    when(fileMetadataRepository.save(any()))
         .thenAnswer(
             i -> {
               FileMetadata metadata = i.getArgument(0);
@@ -88,7 +88,7 @@ class ImageServiceTest {
     ArgumentCaptor<FileMetadata> fileMetadataCaptor = ArgumentCaptor.forClass(FileMetadata.class);
 
     verify(s3Service).deleteFileByKey(fileKeyCaptor.capture());
-    verify(fileRepository).delete(fileMetadataCaptor.capture());
+    verify(fileMetadataRepository).delete(fileMetadataCaptor.capture());
 
     assertEquals(fileKeyCaptor.getValue(), "2f174cea-f566-11ed-a05b-0242ac120003.png");
     assertEquals(testFileMetadata, fileMetadataCaptor.getValue());
