@@ -1,32 +1,15 @@
 package io.marius.demo.ecommerce.inventory.model.payload;
 
+import io.marius.demo.ecommerce.persistence.api.model.view.ClassifierView;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
-import org.springframework.web.multipart.MultipartFile;
 
-public class ProductInput {
-  Long id;
-  String name;
-  Double price;
+public class BaseProductPayload {
+  @NotNull String name;
+  @NotNull Double price;
   String description;
-  String productCategory;
+  @NotNull ClassifierView productCategory;
   List<PropertyInput> properties;
-  List<MultipartFile> files;
-
-  public List<MultipartFile> getFiles() {
-    return files;
-  }
-
-  public void setFiles(List<MultipartFile> files) {
-    this.files = files;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
 
   public String getName() {
     return name;
@@ -52,19 +35,19 @@ public class ProductInput {
     this.description = description;
   }
 
-  public String getProductCategory() {
-    return productCategory;
-  }
-
-  public void setProductCategory(String productCategory) {
-    this.productCategory = productCategory;
-  }
-
   public List<PropertyInput> getProperties() {
     return properties;
   }
 
   public void setProperties(List<PropertyInput> properties) {
     this.properties = properties;
+  }
+
+  public ClassifierView getProductCategory() {
+    return productCategory;
+  }
+
+  public void setProductCategory(ClassifierView productCategory) {
+    this.productCategory = productCategory;
   }
 }

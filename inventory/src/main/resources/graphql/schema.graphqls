@@ -1,17 +1,9 @@
 # Schema
-type InventoryItem{
+type FileView{
     id: Int!
-    quantity: String!
-    product: Product
-}
-
-type Product{
-    id: Int!
-    name: String!
-    price: Float
-    description: String
-    productCategory: ProductCategory
-    properties: [ProductProperty]
+    fileName: String!
+    key: String!
+    s3Url: String!
 }
 
 type ProductCategory{
@@ -19,11 +11,27 @@ type ProductCategory{
     name: String!
 }
 
+type ProductView{
+    id: Int!
+    name: String!
+    price: Float
+    description: String
+    productCategory: ProductCategory
+    properties: [ProductProperty]
+    productFiles: [FileView]
+}
+
 type ProductProperty{
     id: Int!
     name: String!
     description: String!
-    product: Product
+    product: ProductView
+}
+
+type InventoryItem{
+    id: Int!
+    quantity: String!
+    product: ProductView
 }
 
 # Filters
@@ -49,30 +57,7 @@ input InventoryItemsFilter {
 }
 
 type Query{
-    product(id:Int!): Product
-    allProducts(filter: ProductFilter!): [Product]
+    product(id:Int!): ProductView
+    allProducts(filter: ProductFilter!): [ProductView]
     allInventoryItems(filter: InventoryItemsFilter!): [InventoryItem]
 }
-
-# Mutation
-#
-#scalar Upload
-#
-#input ProductInput{
-#    id: Int
-#    name: String!
-#    price: Float
-#    description: String
-#    productCategory: String
-#    properties: [PropertyInput]
-#    file:  Upload
-#}
-#input PropertyInput{
-#    id: Int
-#    name: String!
-#    description: String
-#}
-#
-#type Mutation {
-#    createProduct(product: ProductInput):String
-#}

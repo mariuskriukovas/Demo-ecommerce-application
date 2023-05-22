@@ -1,32 +1,17 @@
-package io.marius.demo.ecommerce.inventory.entity;
+package io.marius.demo.ecommerce.inventory.model.view;
 
-import io.marius.demo.ecommerce.persistence.entity.BaseEntity;
-import jakarta.persistence.*;
+import io.marius.demo.ecommerce.inventory.entity.ProductCategory;
+import io.marius.demo.ecommerce.inventory.entity.ProductProperty;
 import java.util.List;
 
-@Entity
-@Table(name = "product")
-public class Product extends BaseEntity {
-  @Column(name = "name", length = 100)
+public class ProductView {
+  private Long id;
   private String name;
-
-  @Column(name = "price")
   private Double price;
-
-  @Column(name = "description", length = 2000)
   private String description;
-
-  @ManyToOne
-  @JoinColumn(name = "category_id", nullable = false)
   private ProductCategory productCategory;
-
-  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ProductProperty> properties;
-
-  @OneToMany(
-      mappedBy = "product",
-      cascade = CascadeType.ALL) // FileMetadata service is responsible for removal
-  private List<ProductFile> productFiles;
+  private List<FileView> productFiles;
 
   public String getName() {
     return name;
@@ -68,11 +53,19 @@ public class Product extends BaseEntity {
     this.properties = properties;
   }
 
-  public List<ProductFile> getProductFiles() {
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public List<FileView> getProductFiles() {
     return productFiles;
   }
 
-  public void setProductFiles(List<ProductFile> productFiles) {
+  public void setProductFiles(List<FileView> productFiles) {
     this.productFiles = productFiles;
   }
 }

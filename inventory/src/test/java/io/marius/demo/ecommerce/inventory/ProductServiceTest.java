@@ -8,6 +8,7 @@ import io.marius.demo.ecommerce.inventory.model.payload.ProductInput;
 import io.marius.demo.ecommerce.inventory.model.payload.PropertyInput;
 import io.marius.demo.ecommerce.inventory.model.query.ProductFilter;
 import io.marius.demo.ecommerce.inventory.model.query.PropertyFilter;
+import io.marius.demo.ecommerce.inventory.model.view.ProductView;
 import io.marius.demo.ecommerce.inventory.service.ProductService;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -41,7 +42,7 @@ class ProductServiceTest {
   @Transactional(readOnly = true)
   void shouldReturnProductDTOWhenProductExists() {
 
-    Product product = productService.findProduct(1L);
+    ProductView product = productService.findProduct(1L);
 
     assertEquals("Apple MacBook Air (M2)", product.getName());
     assertEquals("Laptop", product.getProductCategory().getName());
@@ -79,7 +80,7 @@ class ProductServiceTest {
     filter.setPriceFrom(1.0);
     filter.setPriceTo(1500.0);
 
-    List<Product> products = productService.findAllProducts(filter);
+    List<ProductView> products = productService.findAllProducts(filter);
     assertEquals(1, products.size());
     assertEquals(1L, products.stream().findFirst().get().getId());
   }
@@ -90,7 +91,7 @@ class ProductServiceTest {
     ProductFilter filter = new ProductFilter();
     filter.setName("MacBookk");
 
-    List<Product> products = productService.findAllProducts(filter);
+    List<ProductView> products = productService.findAllProducts(filter);
     assertEquals(0, products.size());
   }
 
@@ -104,7 +105,7 @@ class ProductServiceTest {
 
     input.setName("MacBook PRO");
     input.setDescription("Best MacBook");
-    input.setProductCategory("Laptop");
+    input.setProductCategoryName("Laptop");
     input.setProperties(List.of(property));
     input.setPrice(1999.99);
 
@@ -122,7 +123,7 @@ class ProductServiceTest {
     input.setPrice(1100.99);
     input.setDescription(
         "The latest MacBook Air, powered by Apple’s M2 processor, is the best laptop for most people.");
-    input.setProductCategory("Laptop");
+    input.setProductCategoryName("Laptop");
 
     DataIntegrityViolationException exception = null;
     try {

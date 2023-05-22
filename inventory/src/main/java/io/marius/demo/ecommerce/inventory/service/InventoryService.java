@@ -1,6 +1,6 @@
 package io.marius.demo.ecommerce.inventory.service;
 
-import static io.marius.demo.ecommerce.inventory.utility.FilterUtility.isValidFilter;
+import static io.marius.demo.ecommerce.inventory.utility.FieldUtility.isFieldValid;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
@@ -49,7 +49,7 @@ public class InventoryService {
           .innerJoin(inventoryItem.product, product)
           .on(productPredicate.buildProductFilteringPredicate(filter.getProductFilter(), product));
 
-      if (isValidFilter(filter.getProductFilter().getProperties())) {
+      if (isFieldValid(filter.getProductFilter().getProperties())) {
         query
             .innerJoin(product.properties, productProperty)
             .on(
