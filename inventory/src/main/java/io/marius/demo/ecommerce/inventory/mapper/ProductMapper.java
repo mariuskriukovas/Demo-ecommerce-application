@@ -14,7 +14,7 @@ import java.util.List;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = ClassifierMapper.class)
 public abstract class ProductMapper {
   @Autowired ProductPropertyRepository productPropertyRepository;
 
