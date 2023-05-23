@@ -98,9 +98,12 @@ class ProductFileServiceTest {
 
   @Test
   public void testDeleteProductFile() throws InterruptedException, ExecutionException {
+    ProductFile testProductFile =
+        productFileRepository.findByUid(productTestHelper.PRODUCT_FILE_UID).orElseThrow();
+
     String deleteProductFileResult =
         executeTransactionalCallback(
-            status -> productFileService.deleteProductFile(productTestHelper.PRODUCT_FILE_UID));
+            status -> productFileService.deleteProductFile(testProductFile.getId()));
 
     Optional<ProductFile> productFile =
         productFileRepository.findByUid(productTestHelper.PRODUCT_FILE_UID);
@@ -110,8 +113,7 @@ class ProductFileServiceTest {
 
     assertEquals(
         deleteProductFileResult,
-        String.format(
-            "Successfully deleted product file with uid: %s", productTestHelper.PRODUCT_FILE_UID));
+        String.format("Successfully deleted product file with id: %d", testProductFile.getId()));
     assertTrue(productFile.isEmpty());
     assertTrue(fileMetadata.isEmpty());
   }

@@ -14,8 +14,8 @@ public class ProductFilesController {
   }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
-  @DeleteMapping("/{uid}")
-  public String deleteProductFileByUid(@PathVariable String uid) {
-    return productFileService.deleteProductFile(uid);
+  @DeleteMapping("/{id}")
+  public String deleteProductFile(@PathVariable Long id) {
+    return productFileService.deleteProductFile(id);
   }
 }

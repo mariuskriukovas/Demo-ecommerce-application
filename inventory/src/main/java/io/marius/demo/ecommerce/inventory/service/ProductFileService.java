@@ -19,10 +19,10 @@ public class ProductFileService {
   }
 
   @Transactional
-  public String deleteProductFile(String uid) {
+  public String deleteProductFile(Long id) {
     ProductFile productFile =
         productFileRepository
-            .findByUid(uid)
+            .findById(id)
             .orElseThrow(() -> new ValidationException("Product file not found !"));
 
     try {
@@ -30,6 +30,6 @@ public class ProductFileService {
     } catch (IOException e) {
       throw new ValidationException("Error deleting images");
     }
-    return String.format("Successfully deleted product file with uid: %s", uid);
+    return String.format("Successfully deleted product file with id: %d", id);
   }
 }
