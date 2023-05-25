@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    driverClassName: org.h2.Driver
+    password: inventory_test_x
+    username: inventory_test_x
+    url: jdbc:h2:mem:inventory_test_DB;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;INIT=CREATE SCHEMA IF NOT EXISTS inventory;
+  flyway:
+    cleanDisabled: false
+    enabled: 'true'
+    baseline-on-migrate: 'true'
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    url: ${spring.datasource.url}
+    schemas: inventory
+  h2:
+    console:
+      path: /h2-console
+      enabled: 'true'
+  jpa:
+    defer-datasource-initialization: 'false'
+    hibernate:
+      ddl-auto: none
+    show-sql: 'true'
+    properties:
+      hibernate:
+        default_schema: inventory
+    database-platform: org.hibernate.dialect.H2Dialect
+  graphql:
+    graphiql:
+      enabled: true
