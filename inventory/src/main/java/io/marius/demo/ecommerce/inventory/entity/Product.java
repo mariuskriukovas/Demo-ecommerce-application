@@ -25,7 +25,7 @@ public class Product extends BaseEntity {
 
   @OneToMany(
       mappedBy = "product",
-      cascade = CascadeType.ALL) // File service is responsible for removal
+      cascade = CascadeType.ALL) // FileMetadata service is responsible for removal
   private List<ProductFile> productFiles;
 
   public String getName() {

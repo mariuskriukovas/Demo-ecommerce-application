@@ -1,7 +1,7 @@
 package io.marius.demo.ecommerce.inventory.controller.graphql;
 
-import io.marius.demo.ecommerce.inventory.entity.Product;
 import io.marius.demo.ecommerce.inventory.model.query.ProductFilter;
+import io.marius.demo.ecommerce.inventory.model.view.ProductView;
 import io.marius.demo.ecommerce.inventory.service.ProductService;
 import java.util.List;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -17,12 +17,12 @@ public class ProductsGraphqlController {
   }
 
   @QueryMapping(value = "product")
-  public Product getProduct(@Argument(name = "id") Long id) {
+  public ProductView getProduct(@Argument(name = "id") Long id) {
     return productService.findProduct(id);
   }
 
   @QueryMapping(value = "allProducts")
-  public List<Product> getAllProducts(@Argument(name = "filter") ProductFilter filter) {
+  public List<ProductView> getAllProducts(@Argument(name = "filter") ProductFilter filter) {
     return productService.findAllProducts(filter);
   }
 }

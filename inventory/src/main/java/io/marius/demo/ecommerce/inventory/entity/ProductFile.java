@@ -12,7 +12,7 @@ public class ProductFile extends BaseEntity {
 
   @ManyToOne
   @JoinColumn(name = "file_id", nullable = false)
-  private File file;
+  private FileMetadata fileMetadata;
 
   public Product getProduct() {
     return product;
@@ -22,11 +22,11 @@ public class ProductFile extends BaseEntity {
     this.product = product;
   }
 
-  public File getFile() {
-    return file;
+  public FileMetadata getFileMetadata() {
+    return fileMetadata;
   }
 
-  public void setFile(File file) {
-    this.file = file;
+  public void setFileMetadata(FileMetadata fileMetadata) {
+    this.fileMetadata = fileMetadata;
   }
 }
