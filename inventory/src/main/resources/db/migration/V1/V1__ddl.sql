@@ -1,12 +1,14 @@
 CREATE TABLE inventory.product_category
 (
     id   bigserial PRIMARY KEY,
+    uid  varchar(40)  NOT NULL UNIQUE,
     name varchar(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE inventory.product
 (
     id          bigserial PRIMARY KEY,
+    uid         varchar(40)  NOT NULL UNIQUE,
     name        varchar(100) NOT NULL,
     price       real         NOT NULL,
     description varchar(2000),
@@ -18,6 +20,7 @@ CREATE TABLE inventory.product
 CREATE TABLE inventory.product_property
 (
     id          bigserial PRIMARY KEY,
+    uid         varchar(40)  NOT NULL UNIQUE,
     name        varchar(100) NOT NULL,
     description varchar(1000),
     product_id  integer      NOT NULL,
@@ -28,7 +31,8 @@ CREATE TABLE inventory.product_property
 CREATE TABLE inventory.inventory_item
 (
     id         bigserial PRIMARY KEY,
-    quantity   integer NOT NULL,
-    product_id integer NOT NULL UNIQUE,
+    uid        varchar(40) NOT NULL UNIQUE,
+    quantity   integer     NOT NULL,
+    product_id integer     NOT NULL UNIQUE,
     CONSTRAINT fk_inventory_item_product_id FOREIGN KEY (product_id) REFERENCES inventory.product (id)
 );

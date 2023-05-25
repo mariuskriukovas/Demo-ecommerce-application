@@ -14,7 +14,7 @@ import java.util.List;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = ClassifierMapper.class)
 public abstract class ProductMapper {
   @Autowired ProductPropertyRepository productPropertyRepository;
 
@@ -33,12 +33,13 @@ public abstract class ProductMapper {
   public abstract void update(@MappingTarget ProductProperty entity, PropertyInput input);
 
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "uid", ignore = true)
   @Mapping(target = "product", source = "product")
   @Mapping(target = "fileMetadata", source = "fileMetadata")
   public abstract ProductFile toProductFile(Product product, FileMetadata fileMetadata);
 
   @Mapping(target = "fileName", source = "entity.fileMetadata.fileName")
-  @Mapping(target = "key", source = "entity.fileMetadata.key")
+  @Mapping(target = "key", source = "entity.fileMetadata.fileKey")
   @Mapping(target = "s3Url", source = "entity.fileMetadata.s3Url")
   public abstract FileView toFileView(ProductFile entity);
 

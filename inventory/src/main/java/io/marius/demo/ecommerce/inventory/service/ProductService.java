@@ -105,6 +105,7 @@ public class ProductService {
 
       query.innerJoin(product.properties, productProperty).on(propertyQuery);
     }
+
     return query.fetch().stream().map(productMapper::toProductView).collect(Collectors.toList());
   }
 

@@ -10,8 +10,8 @@ public class FileMetadata extends BaseEntity {
   @Column(name = "file_name", length = 500)
   private String fileName;
 
-  @Column(name = "key", length = 100)
-  private String key;
+  @Column(name = "file_key", length = 100)
+  private String fileKey;
 
   @Column(name = "file_extension", length = 10)
   private String extension;
@@ -46,14 +46,6 @@ public class FileMetadata extends BaseEntity {
     this.s3Url = s3Url;
   }
 
-  public String getKey() {
-    return key;
-  }
-
-  public void setKey(String key) {
-    this.key = key;
-  }
-
   public String getExtension() {
     return extension;
   }
@@ -62,13 +54,22 @@ public class FileMetadata extends BaseEntity {
     this.extension = extension;
   }
 
+  public String getFileKey() {
+    return fileKey;
+  }
+
+  public void setFileKey(String fileKey) {
+    this.fileKey = fileKey;
+  }
+
   public static final class FileMetadataBuilder {
     private String fileName;
-    private String key;
+    private String fileKey;
     private String extension;
     private String s3Url;
     private List<ProductFile> productFiles;
     private Long id;
+    private String uid;
 
     private FileMetadataBuilder() {}
 
@@ -81,8 +82,8 @@ public class FileMetadata extends BaseEntity {
       return this;
     }
 
-    public FileMetadataBuilder withKey(String key) {
-      this.key = key;
+    public FileMetadataBuilder withFileKey(String fileKey) {
+      this.fileKey = fileKey;
       return this;
     }
 
@@ -106,14 +107,20 @@ public class FileMetadata extends BaseEntity {
       return this;
     }
 
+    public FileMetadataBuilder withUid(String uid) {
+      this.uid = uid;
+      return this;
+    }
+
     public FileMetadata build() {
       FileMetadata fileMetadata = new FileMetadata();
       fileMetadata.setFileName(fileName);
-      fileMetadata.setKey(key);
+      fileMetadata.setFileKey(fileKey);
       fileMetadata.setExtension(extension);
       fileMetadata.setS3Url(s3Url);
       fileMetadata.setProductFiles(productFiles);
       fileMetadata.setId(id);
+      fileMetadata.setUid(uid);
       return fileMetadata;
     }
   }
