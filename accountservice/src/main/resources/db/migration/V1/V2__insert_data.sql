@@ -1,7 +1,17 @@
-INSERT INTO PUBLIC.shop_user (username,
-                              password,
-                              email)
-VALUES ('userA', '$2a$10$XCBUcZPNaKakw5HRAjKk9OKo0iZkq0doEJUxRkXeyl/PqofG6z2LK', 'userA@gmail.com'),
-       ('userB', '$2a$12$zc43GqFHIpHK.eUQN.14UuRoPmfpu6IQlcqzg4d5b9UrdYf0N4xz6', 'userB@gmail.com'),
-       ('userC', '$2a$12$O8B2LDq7egMeD0usZvmHTeIpE4auaAyQbC2GKvn3jWJFBxDdr3N9C', 'userC@gmail.com');
+INSERT INTO account.shop_user (uid,
+                               username,
+                               password,
+                               email)
+VALUES ('81de5e6e-f0c0-11ed-a05b-0242ac120003', 'userA', '$2a$10$XCBUcZPNaKakw5HRAjKk9OKo0iZkq0doEJUxRkXeyl/PqofG6z2LK',
+        'userA@gmail.com'),
+       ('81de61c0-f0c0-11ed-a05b-0242ac120003', 'userB', '$2a$12$zc43GqFHIpHK.eUQN.14UuRoPmfpu6IQlcqzg4d5b9UrdYf0N4xz6',
+        'userB@gmail.com'),
+       ('81de6454-f0c0-11ed-a05b-0242ac120003', 'userC', '$2a$12$O8B2LDq7egMeD0usZvmHTeIpE4auaAyQbC2GKvn3jWJFBxDdr3N9C',
+        'userC@gmail.com');
 
+INSERT INTO account.role (uid,
+                          user_id,
+                          role)
+VALUES ('ee0aabec-f86d-11ed-b67e-0242ac120002', (select id from account.shop_user where username = 'userA'), 'USER'),
+       ('ee0aaf8e-f86d-11ed-b67e-0242ac120002', (select id from account.shop_user where username = 'userB'), 'USER'),
+       ('ee0ab11e-f86d-11ed-b67e-0242ac120002', (select id from account.shop_user where username = 'userC'), 'ADMIN');

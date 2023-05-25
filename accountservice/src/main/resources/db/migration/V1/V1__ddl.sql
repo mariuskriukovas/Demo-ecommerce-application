@@ -1,13 +1,18 @@
-CREATE TABLE shop_user
+CREATE TABLE account.shop_user
 (
-    id       IDENTITY PRIMARY KEY,
-    username VARCHAR(100) NOT NULL,
-    password VARCHAR(100) NOT NULL,
-    email    VARCHAR(100) NOT NULL
+    id       bigserial PRIMARY KEY,
+    uid      varchar(40)  NOT NULL UNIQUE,
+    username varchar(100) NOT NULL UNIQUE,
+    password varchar(100) NOT NULL,
+    email    varchar(100) NOT NULL UNIQUE
 );
 
-ALTER TABLE shop_user
-    ADD UNIQUE (username);
-
-ALTER TABLE shop_user
-    ADD UNIQUE (email);
+CREATE TABLE account.role
+(
+    id      bigserial PRIMARY KEY,
+    uid     varchar(40)  NOT NULL UNIQUE,
+    user_id integer      NOT NULL,
+    role    varchar(100) NOT NULL,
+    CONSTRAINT fk_role_user_id FOREIGN KEY (user_id) REFERENCES account.shop_user (id),
+    UNIQUE (user_id, role)
+);
