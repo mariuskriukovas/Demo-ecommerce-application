@@ -8,7 +8,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-FROM nginx:stable-alpine as production-stage
+FROM nginx:stable-alpine-perl as production-stage
 COPY nginx/ /etc/nginx/
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
