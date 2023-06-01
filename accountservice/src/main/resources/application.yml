@@ -1,4 +1,5 @@
 spring:
+  application.name: account-service
   flyway:
     enabled: 'true'
     baseline-on-migrate: 'true'
@@ -26,14 +27,20 @@ spring:
       hibernate:
         default_schema: account
 server:
-  servlet:
-    context-path: /api
   port: '9000'
+
+oauth2:
+  server:
+    authorization:
+      client:
+        id: xxx
+        secret: xxx
+        redirectUri: xxx
 
 jwt:
   claims:
     custom:
-      issuer: Marius
+      issuer: http://account-service:9000
       expiry: 36000
   public:
     key: classpath:rsa.public.key

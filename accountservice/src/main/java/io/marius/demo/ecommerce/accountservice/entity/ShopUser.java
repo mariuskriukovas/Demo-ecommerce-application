@@ -24,7 +24,11 @@ public class ShopUser extends BaseEntity implements UserDetails {
   @Column(name = "email", length = 100)
   private String email;
 
-  @OneToMany(mappedBy = "shopUser", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(
+      mappedBy = "shopUser",
+      fetch = FetchType.EAGER,
+      cascade = CascadeType.ALL,
+      orphanRemoval = true)
   private List<Role> roles;
 
   @Override

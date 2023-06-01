@@ -21,4 +21,9 @@ public class SessionController extends BaseController {
   ResponseEntity<UserView> login(@Validated @RequestBody LoginPayload payload) {
     return authorizationService.login(payload);
   }
+
+  @GetMapping("sorry")
+  ResponseEntity<String> login() {
+    return ResponseEntity.ok("Sorry, you need to be authenticated first :(");
+  }
 }
