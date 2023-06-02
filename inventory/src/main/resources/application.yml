@@ -7,12 +7,13 @@ aws:
     bucket:
       name: xxx
 spring:
+  application:
+    name: inventory-service
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: Marius
-          jwk-set-uri: http://auth-server:9000/api/.well-known/jwks.json
+          issuer-uri: http://account-service:9000
 
   flyway:
     enabled: 'true'
@@ -28,7 +29,7 @@ spring:
     driverClassName: org.postgresql.Driver
     password: inventory_x
     username: inventory_x
-    url: jdbc:postgresql://xxx/postgres
+    url: xxx
   h2:
     console:
       path: /h2-console
@@ -45,8 +46,8 @@ spring:
       enabled: true
   servlet:
     multipart:
-      max-request-size: 1280KB
-      max-file-size: 1280KB
+      max-request-size: 5MB
+      max-file-size: 5MB
       enabled: true
 server:
   servlet:
