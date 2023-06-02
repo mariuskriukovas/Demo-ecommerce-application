@@ -1,9 +1,9 @@
 import ApiInterceptor from "@/plugins/api/ApiInterceptor";
 
-const api = ApiInterceptor("accounts");
+const api = ApiInterceptor("api/auth");
 
 export default {
   async login(data) {
-    return (await api.post("sessions/login", data))
+    return (await api.post("/login", data))
   },
 };

@@ -36,19 +36,18 @@ export default defineConfig({
     ],
   },
   server: {
-    port: 8080,
+    port: 8040,
     proxy: {
-      '^/accounts': {
-        target: 'http://auth-server:9000',
-        rewrite: path => path.replace(/^\/accounts/, 'api'),
+      '^/api/auth': {
+        target: 'http://localhost:8888',
+        rewrite: path => path.replace(/^\/api\/auth/, 'auth'),
         secure: false,
         changeOrigin: true,
         logLevel: 'debug',
       },
-      '^/inventory': {
-        target: 'http://inventory-server:9001',
-        // target: 'http://mariusspringapplication-env.eba-niktivih.eu-north-1.elasticbeanstalk.com:9001',
-        rewrite: path => path.replace(/^\/inventory/, 'api'),
+      '^/api/inventory': {
+        target: 'http://localhost:8888',
+        rewrite: path => path.replace(/^\/api\/inventory/, 'inventory'),
         secure: false,
         changeOrigin: true,
         logLevel: 'debug',

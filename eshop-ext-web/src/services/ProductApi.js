@@ -2,7 +2,7 @@ import ApiInterceptor from "@/plugins/api/ApiInterceptor";
 import * as gql from 'gql-query-builder'
 import {omitBy} from "lodash";
 
-const api = ApiInterceptor("inventory");
+const api = ApiInterceptor("api/inventory");
 
 export default {
   async getByQuery(query) {
