@@ -1,8 +1,8 @@
 package io.marius.demo.ecommerce.inventory.config;
 
+import io.marius.demo.ecommerce.common.api.converter.AtributeConverter;
+import io.marius.demo.ecommerce.common.api.converter.ClassifierViewConverter;
 import io.marius.demo.ecommerce.inventory.model.payload.PropertyInput;
-import io.marius.demo.ecommerce.persistence.api.converter.AtributeConverter;
-import io.marius.demo.ecommerce.persistence.api.converter.ClassifierViewConverter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

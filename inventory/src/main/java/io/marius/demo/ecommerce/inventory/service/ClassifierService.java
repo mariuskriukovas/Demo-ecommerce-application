@@ -1,9 +1,9 @@
 package io.marius.demo.ecommerce.inventory.service;
 
+import io.marius.demo.ecommerce.common.api.view.ClassifierView;
 import io.marius.demo.ecommerce.inventory.mapper.ClassifierMapper;
 import io.marius.demo.ecommerce.inventory.repository.ProductCategoryRepository;
 import io.marius.demo.ecommerce.inventory.repository.ProductPropertyRepository;
-import io.marius.demo.ecommerce.persistence.api.model.view.ClassifierView;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;

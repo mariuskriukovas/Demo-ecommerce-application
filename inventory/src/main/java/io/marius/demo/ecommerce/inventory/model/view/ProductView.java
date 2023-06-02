@@ -1,6 +1,6 @@
 package io.marius.demo.ecommerce.inventory.model.view;
 
-import io.marius.demo.ecommerce.persistence.api.model.view.ClassifierView;
+import io.marius.demo.ecommerce.common.api.view.ClassifierView;
 import java.util.List;
 
 public class ProductView {

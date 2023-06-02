@@ -1,11 +1,11 @@
 package io.marius.demo.ecommerce.inventory.helper;
 
+import io.marius.demo.ecommerce.common.api.view.ClassifierView;
+import io.marius.demo.ecommerce.common.persistence.entity.BaseEntity;
 import io.marius.demo.ecommerce.inventory.entity.*;
 import io.marius.demo.ecommerce.inventory.model.payload.BaseProductPayload;
 import io.marius.demo.ecommerce.inventory.model.payload.ProductCreationPayload;
 import io.marius.demo.ecommerce.inventory.model.payload.PropertyInput;
-import io.marius.demo.ecommerce.persistence.api.model.view.ClassifierView;
-import io.marius.demo.ecommerce.persistence.entity.BaseEntity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,8 +1,8 @@
 package io.marius.demo.ecommerce.inventory.mapper;
 
+import io.marius.demo.ecommerce.common.api.view.ClassifierView;
 import io.marius.demo.ecommerce.inventory.entity.ProductCategory;
 import io.marius.demo.ecommerce.inventory.entity.ProductProperty;
-import io.marius.demo.ecommerce.persistence.api.model.view.ClassifierView;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")

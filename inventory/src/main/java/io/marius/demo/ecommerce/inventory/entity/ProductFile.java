@@ -1,6 +1,6 @@
 package io.marius.demo.ecommerce.inventory.entity;
 
-import io.marius.demo.ecommerce.persistence.entity.BaseEntity;
+import io.marius.demo.ecommerce.common.persistence.entity.BaseEntity;
 import jakarta.persistence.*;
 
 @Entity

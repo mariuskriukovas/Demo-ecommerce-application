@@ -1,6 +1,6 @@
 package io.marius.demo.ecommerce.inventory.model.payload;
 
-import io.marius.demo.ecommerce.persistence.api.model.view.ClassifierView;
+import io.marius.demo.ecommerce.common.api.view.ClassifierView;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 

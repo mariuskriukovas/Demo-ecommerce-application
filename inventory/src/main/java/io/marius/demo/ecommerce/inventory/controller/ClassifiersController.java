@@ -1,7 +1,7 @@
 package io.marius.demo.ecommerce.inventory.controller;
 
+import io.marius.demo.ecommerce.common.api.view.ClassifierView;
 import io.marius.demo.ecommerce.inventory.service.ClassifierService;
-import io.marius.demo.ecommerce.persistence.api.model.view.ClassifierView;
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
