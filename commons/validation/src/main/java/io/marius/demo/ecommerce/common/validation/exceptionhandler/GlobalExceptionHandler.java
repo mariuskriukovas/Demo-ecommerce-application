@@ -1,7 +1,7 @@
-package io.marius.demo.ecommerce.validation.exceptionhandler;
+package io.marius.demo.ecommerce.common.validation.exceptionhandler;
 
-import io.marius.demo.ecommerce.validation.view.ErrorView;
-import io.marius.demo.ecommerce.validation.view.builder.ErrorViewBuilder;
+import io.marius.demo.ecommerce.common.validation.view.ErrorView;
+import io.marius.demo.ecommerce.common.validation.view.builder.ErrorViewBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;

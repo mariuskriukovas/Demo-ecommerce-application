@@ -1,6 +1,6 @@
-package io.marius.demo.ecommerce.validation.configuration;
+package io.marius.demo.ecommerce.common.validation.config;
 
-import io.marius.demo.ecommerce.validation.exceptionhandler.GlobalExceptionHandler;
+import io.marius.demo.ecommerce.common.validation.exceptionhandler.GlobalExceptionHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
