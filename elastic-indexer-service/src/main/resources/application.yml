@@ -1,0 +1,15 @@
+spring:
+  application.name: elastic-indexer-service
+  elasticsearch:
+    username: spring_user
+    password: spring_user123
+    hostname: localhost
+    port: 9200
+    scheme: https
+    ssl: false
+  #    uris: https://localhost:9200
+
+indexer:
+  initialization:
+    enabled: true
+    filepath: phone_dataset.xlsx
