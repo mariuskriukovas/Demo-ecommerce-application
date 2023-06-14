@@ -1,9 +1,8 @@
 package io.marius.demo.ecommerce.elasticindexerservice.config;
 
 import com.poiji.bind.Poiji;
-import io.marius.demo.ecommerce.elasticindexerservice.elastic.document.PhoneIndex;
+import io.marius.demo.ecommerce.elasticindexerservice.elastic.document.PhoneProduct;
 import io.marius.demo.ecommerce.elasticindexerservice.elastic.repo.PhoneRepository;
-import io.marius.demo.ecommerce.elasticindexerservice.mapper.ProductMapper;
 import io.marius.demo.ecommerce.elasticindexerservice.sheet.PhoneDataRow;
 import java.io.IOException;
 import java.util.List;
@@ -17,14 +16,12 @@ import org.springframework.core.io.ClassPathResource;
 @Configuration
 public class IndexerConfig {
   private final PhoneRepository phoneRepository;
-  private final ProductMapper productMapper;
 
   @Value("${indexer.initialization.filepath}")
   private String filepath;
 
-  public IndexerConfig(PhoneRepository phoneRepository, ProductMapper productMapper) {
+  public IndexerConfig(PhoneRepository phoneRepository) {
     this.phoneRepository = phoneRepository;
-    this.productMapper = productMapper;
   }
 
   @Bean
@@ -34,8 +31,8 @@ public class IndexerConfig {
       ClassPathResource resource = new ClassPathResource(filepath);
       List<PhoneDataRow> phoneDataRows = Poiji.fromExcel(resource.getFile(), PhoneDataRow.class);
 
-      List<PhoneIndex> items =
-          phoneDataRows.stream().map(productMapper::toPhoneIndex).collect(Collectors.toList());
+      List<PhoneProduct> items =
+          phoneDataRows.stream().map(PhoneProduct::new).collect(Collectors.toList());
 
       phoneRepository.saveAll(items);
 

@@ -9,6 +9,14 @@ spring:
     ssl: false
   #    uris: https://localhost:9200
 
+logging:
+  level:
+    org:
+      hibernate: ERROR
+      springframework:
+        web: DEBUG
+        security: DEBUG
+
 indexer:
   initialization:
     enabled: true

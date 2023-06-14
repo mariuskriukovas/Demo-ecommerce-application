@@ -8,6 +8,12 @@ public class PhoneDataRow {
   @ExcelCellName("brand")
   private String brand;
 
+  @ExcelCellName("model")
+  private String model;
+
+  @ExcelCellName("img_url")
+  private String imgUrl;
+
   @ExcelCellName("network_technology")
   private String networkTechnology;
 
@@ -399,5 +405,21 @@ public class PhoneDataRow {
 
   public void setApproxPriceEur(String approxPriceEur) {
     this.approxPriceEur = approxPriceEur;
+  }
+
+  public String getModel() {
+    return model;
+  }
+
+  public void setModel(String model) {
+    this.model = model;
+  }
+
+  public String getImgUrl() {
+    return imgUrl;
+  }
+
+  public void setImgUrl(String imgUrl) {
+    this.imgUrl = imgUrl;
   }
 }
