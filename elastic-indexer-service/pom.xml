@@ -19,9 +19,8 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>io.marius.demo.ecommerce</groupId>
-            <artifactId>inventory-api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
@@ -52,6 +51,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.marius.demo.ecommerce</groupId>
+            <artifactId>inventory-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>

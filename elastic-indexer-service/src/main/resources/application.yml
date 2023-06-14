@@ -19,5 +19,5 @@ logging:
 
 indexer:
   initialization:
-    enabled: true
+    enabled: false
     filepath: phone_dataset.xlsx
