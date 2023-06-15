@@ -2,7 +2,8 @@ package io.marius.demo.ecommerce.elasticindexerservice.elastic.document;
 
 import io.marius.demo.ecommerce.inventory.api.entity.BaseProductProperty;
 
-public record ProductProperty(String name, String description) implements BaseProductProperty {
+public record ProductProperty(String uid, String name, String description)
+    implements BaseProductProperty {
   @Override
   public String getName() {
     return name;
@@ -11,5 +12,10 @@ public record ProductProperty(String name, String description) implements BasePr
   @Override
   public String getDescription() {
     return description;
+  }
+
+  @Override
+  public String getUid() {
+    return uid;
   }
 }

@@ -2,7 +2,8 @@ package io.marius.demo.ecommerce.elasticindexerservice.elastic.document;
 
 import io.marius.demo.ecommerce.inventory.api.entity.BaseFileMetadata;
 
-public record FileMetadata(String fileName, String s3Url, String extension, String fileKey)
+public record FileMetadata(
+    String uid, String fileName, String s3Url, String extension, String fileKey)
     implements BaseFileMetadata {
 
   @Override
@@ -23,5 +24,10 @@ public record FileMetadata(String fileName, String s3Url, String extension, Stri
   @Override
   public String getFileKey() {
     return fileKey;
+  }
+
+  @Override
+  public String getUid() {
+    return uid;
   }
 }

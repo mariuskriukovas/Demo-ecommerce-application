@@ -3,6 +3,7 @@ package io.marius.demo.ecommerce.elasticindexerservice.elastic.document;
 import io.marius.demo.ecommerce.elasticindexerservice.sheet.PhoneDataRow;
 import io.marius.demo.ecommerce.inventory.api.entity.*;
 import java.util.List;
+import java.util.UUID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -20,52 +21,63 @@ public class PhoneProduct implements BaseProduct {
   private String uid;
 
   public PhoneProduct(PhoneDataRow phoneDataRow) {
+    uid = getRandomUid();
     name = phoneDataRow.getBrand() + " " + phoneDataRow.getModel();
     price = toDouble(phoneDataRow.getApproxPriceEur());
     description = phoneDataRow.getStatus();
 
     properties =
         List.of(
-            new ProductProperty("Network Technology", phoneDataRow.getNetworkTechnology()),
-            new ProductProperty("2G Bands", phoneDataRow.get_2gBands()),
-            new ProductProperty("4G Bands", phoneDataRow.get_4gBands()),
-            new ProductProperty("GPRS", phoneDataRow.getGprs()),
-            new ProductProperty("EDGE", phoneDataRow.getEdge()),
-            new ProductProperty("Announced", phoneDataRow.getAnnounced()),
-            new ProductProperty("Dimentions", phoneDataRow.getDimentions()),
-            new ProductProperty("Weight G.", toString(phoneDataRow.getWeightG())),
-            new ProductProperty("Weight Oz.", toString(phoneDataRow.getWeightOz())),
-            new ProductProperty("SIM", phoneDataRow.getSim()),
-            new ProductProperty("Display Type", phoneDataRow.getDisplayType()),
-            new ProductProperty("Display Resolution", phoneDataRow.getDisplayResolution()),
-            new ProductProperty("Display Size", phoneDataRow.getDisplaySize()),
-            new ProductProperty("OS", phoneDataRow.getOs()),
-            new ProductProperty("CPU", phoneDataRow.getCpu()),
-            new ProductProperty("Chipset", phoneDataRow.getChipset()),
-            new ProductProperty("GPU", phoneDataRow.getGpu()),
-            new ProductProperty("Memory Card", phoneDataRow.getMemoryCard()),
-            new ProductProperty("Internal Memory", phoneDataRow.getInternalMemory()),
-            new ProductProperty("RAM", phoneDataRow.getRam()),
-            new ProductProperty("Primary Camera", phoneDataRow.getPrimaryCamera()),
-            new ProductProperty("Secondary Camera", phoneDataRow.getSecondaryCamera()),
-            new ProductProperty("Loud Speaker", phoneDataRow.getLoudSpeaker()),
-            new ProductProperty("Audio Jack", phoneDataRow.getAudioJack()),
-            new ProductProperty("WLAN", phoneDataRow.getWlan()),
-            new ProductProperty("Bluetooth", phoneDataRow.getBluetooth()),
-            new ProductProperty("GPS", phoneDataRow.getGps()),
-            new ProductProperty("NFC", phoneDataRow.getNfc()),
-            new ProductProperty("Radio", phoneDataRow.getRadio()),
-            new ProductProperty("USB", phoneDataRow.getUsb()),
-            new ProductProperty("Sensors", phoneDataRow.getSensors()),
-            new ProductProperty("Battery", phoneDataRow.getBattery()),
-            new ProductProperty("Colors", phoneDataRow.getColors()));
+            new ProductProperty(
+                getRandomUid(), "Network Technology", phoneDataRow.getNetworkTechnology()),
+            new ProductProperty(getRandomUid(), "2G Bands", phoneDataRow.get_2gBands()),
+            new ProductProperty(getRandomUid(), "4G Bands", phoneDataRow.get_4gBands()),
+            new ProductProperty(getRandomUid(), "GPRS", phoneDataRow.getGprs()),
+            new ProductProperty(getRandomUid(), "EDGE", phoneDataRow.getEdge()),
+            new ProductProperty(getRandomUid(), "Announced", phoneDataRow.getAnnounced()),
+            new ProductProperty(getRandomUid(), "Dimentions", phoneDataRow.getDimentions()),
+            new ProductProperty(getRandomUid(), "Weight G.", toString(phoneDataRow.getWeightG())),
+            new ProductProperty(getRandomUid(), "Weight Oz.", toString(phoneDataRow.getWeightOz())),
+            new ProductProperty(getRandomUid(), "SIM", phoneDataRow.getSim()),
+            new ProductProperty(getRandomUid(), "Display Type", phoneDataRow.getDisplayType()),
+            new ProductProperty(
+                getRandomUid(), "Display Resolution", phoneDataRow.getDisplayResolution()),
+            new ProductProperty(getRandomUid(), "Display Size", phoneDataRow.getDisplaySize()),
+            new ProductProperty(getRandomUid(), "OS", phoneDataRow.getOs()),
+            new ProductProperty(getRandomUid(), "CPU", phoneDataRow.getCpu()),
+            new ProductProperty(getRandomUid(), "Chipset", phoneDataRow.getChipset()),
+            new ProductProperty(getRandomUid(), "GPU", phoneDataRow.getGpu()),
+            new ProductProperty(getRandomUid(), "Memory Card", phoneDataRow.getMemoryCard()),
+            new ProductProperty(
+                getRandomUid(), "Internal Memory", phoneDataRow.getInternalMemory()),
+            new ProductProperty(getRandomUid(), "RAM", phoneDataRow.getRam()),
+            new ProductProperty(getRandomUid(), "Primary Camera", phoneDataRow.getPrimaryCamera()),
+            new ProductProperty(
+                getRandomUid(), "Secondary Camera", phoneDataRow.getSecondaryCamera()),
+            new ProductProperty(getRandomUid(), "Loud Speaker", phoneDataRow.getLoudSpeaker()),
+            new ProductProperty(getRandomUid(), "Audio Jack", phoneDataRow.getAudioJack()),
+            new ProductProperty(getRandomUid(), "WLAN", phoneDataRow.getWlan()),
+            new ProductProperty(getRandomUid(), "Bluetooth", phoneDataRow.getBluetooth()),
+            new ProductProperty(getRandomUid(), "GPS", phoneDataRow.getGps()),
+            new ProductProperty(getRandomUid(), "NFC", phoneDataRow.getNfc()),
+            new ProductProperty(getRandomUid(), "Radio", phoneDataRow.getRadio()),
+            new ProductProperty(getRandomUid(), "USB", phoneDataRow.getUsb()),
+            new ProductProperty(getRandomUid(), "Sensors", phoneDataRow.getSensors()),
+            new ProductProperty(getRandomUid(), "Battery", phoneDataRow.getBattery()),
+            new ProductProperty(getRandomUid(), "Colors", phoneDataRow.getColors()));
 
     String fileName = getSubstringFromLastCharSeparator(phoneDataRow.getImgUrl(), '/');
     String extension = getSubstringFromLastCharSeparator(phoneDataRow.getImgUrl(), '.');
     files =
         List.of(
             new ProductFile(
-                new FileMetadata(fileName, phoneDataRow.getImgUrl(), extension, fileName)));
+                getRandomUid(),
+                new FileMetadata(
+                    getRandomUid(), fileName, phoneDataRow.getImgUrl(), extension, fileName)));
+  }
+
+  private String getRandomUid() {
+    return UUID.randomUUID().toString();
   }
 
   private Double toDouble(String number) {
@@ -94,32 +106,26 @@ public class PhoneProduct implements BaseProduct {
     }
   }
 
-  @Override
   public String getName() {
     return name;
   }
 
-  @Override
   public Double getPrice() {
     return price;
   }
 
-  @Override
   public String getDescription() {
     return description;
   }
 
-  @Override
   public BaseProductCategory getProductCategory() {
     return null;
   }
 
-  @Override
   public List<? extends BaseProductProperty> getProperties() {
     return properties;
   }
 
-  @Override
   public List<? extends BaseProductFile> getProductFiles() {
     return files;
   }
