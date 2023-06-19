@@ -17,6 +17,7 @@
     <modules>
         <module>persistence</module>
         <module>api</module>
+        <module>web</module>
         <module>validation</module>
         <module>security</module>
         <module>elastic</module>

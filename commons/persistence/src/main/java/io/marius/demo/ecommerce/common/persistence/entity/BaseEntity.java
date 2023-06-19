@@ -1,11 +1,12 @@
 package io.marius.demo.ecommerce.common.persistence.entity;
 
+import io.marius.demo.ecommerce.common.api.BaseIdentifiable;
 import io.marius.demo.ecommerce.common.persistence.listener.BaseEntityListener;
 import jakarta.persistence.*;
 
 @MappedSuperclass
 @EntityListeners(BaseEntityListener.class)
-public class BaseEntity {
+public class BaseEntity implements BaseIdentifiable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

@@ -1,4 +1,4 @@
-package io.marius.demo.ecommerce.common.api.converter;
+package io.marius.demo.ecommerce.common.web.converter;
 
 import io.marius.demo.ecommerce.common.api.view.ClassifierView;
 

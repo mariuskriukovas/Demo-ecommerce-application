@@ -1,4 +1,4 @@
-package io.marius.demo.ecommerce.common.api.converter;
+package io.marius.demo.ecommerce.common.web.converter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
