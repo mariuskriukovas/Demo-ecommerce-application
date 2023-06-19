@@ -1,5 +1,10 @@
 spring:
   application.name: elastic-indexer-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://account-service:9000
   elasticsearch:
     username: spring_user
     password: spring_user123
@@ -8,6 +13,12 @@ spring:
     scheme: https
     ssl: false
   #    uris: https://localhost:9200
+
+services:
+  inventory:
+    url: http://localhost:9001
+  account:
+    url: http://localhost:9000
 
 logging:
   level:
@@ -19,5 +30,5 @@ logging:
 
 indexer:
   initialization:
-    enabled: false
+    enabled: true
     filepath: phone_dataset.xlsx

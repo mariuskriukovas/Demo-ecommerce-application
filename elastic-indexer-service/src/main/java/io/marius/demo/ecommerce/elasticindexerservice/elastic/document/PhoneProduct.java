@@ -1,5 +1,6 @@
 package io.marius.demo.ecommerce.elasticindexerservice.elastic.document;
 
+import io.marius.demo.ecommerce.common.api.view.ClassifierView;
 import io.marius.demo.ecommerce.elasticindexerservice.sheet.PhoneDataRow;
 import io.marius.demo.ecommerce.inventory.api.entity.*;
 import java.util.List;
@@ -15,6 +16,7 @@ public class PhoneProduct implements BaseProduct {
   private final Double price;
   private final String description;
   private final List<ProductFile> files;
+  private ClassifierView category;
 
   @Id
   @Field(name = "uid")
@@ -119,7 +121,11 @@ public class PhoneProduct implements BaseProduct {
   }
 
   public BaseProductCategory getProductCategory() {
-    return null;
+    return (BaseProductCategory) category;
+  }
+
+  public void setCategory(ClassifierView category) {
+    this.category = category;
   }
 
   public List<? extends BaseProductProperty> getProperties() {
