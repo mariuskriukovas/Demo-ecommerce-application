@@ -1,1 +1,2 @@
 io.marius.demo.ecommerce.common.security.config.SecurityConfig
+io.marius.demo.ecommerce.common.security.config.FeignClientConfig
