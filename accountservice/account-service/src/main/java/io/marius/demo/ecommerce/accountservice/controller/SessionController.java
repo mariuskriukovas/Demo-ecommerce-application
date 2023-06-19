@@ -1,6 +1,7 @@
 package io.marius.demo.ecommerce.accountservice.controller;
 
-import io.marius.demo.ecommerce.accountservice.model.payload.LoginPayload;
+import io.marius.demo.ecommerce.account.api.payload.LoginPayload;
+import io.marius.demo.ecommerce.account.api.resource.SessionResource;
 import io.marius.demo.ecommerce.accountservice.model.view.UserView;
 import io.marius.demo.ecommerce.accountservice.service.AuthorizationService;
 import io.marius.demo.ecommerce.common.web.controller.BaseController;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("sessions")
-public class SessionController extends BaseController {
+public class SessionController extends BaseController implements SessionResource {
   private final AuthorizationService authorizationService;
 
   public SessionController(AuthorizationService authorizationService) {
@@ -18,17 +19,17 @@ public class SessionController extends BaseController {
   }
 
   @PostMapping("login")
-  ResponseEntity<UserView> login(@Validated @RequestBody LoginPayload payload) {
+  public ResponseEntity<UserView> login(@Validated @RequestBody LoginPayload payload) {
     return authorizationService.login(payload);
   }
 
   @PostMapping("authorize")
-  ResponseEntity<Void> authorize(@Validated @RequestBody LoginPayload payload) {
+  public ResponseEntity<Void> authorize(@Validated @RequestBody LoginPayload payload) {
     return authorizationService.authorize(payload);
   }
 
   @GetMapping("sorry")
-  ResponseEntity<String> login() {
+  public ResponseEntity<String> login() {
     return ResponseEntity.ok("Sorry, you need to be authenticated first :(");
   }
 }

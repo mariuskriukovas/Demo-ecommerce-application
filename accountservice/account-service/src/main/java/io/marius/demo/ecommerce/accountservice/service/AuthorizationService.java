@@ -2,8 +2,8 @@ package io.marius.demo.ecommerce.accountservice.service;
 
 import static java.util.stream.Collectors.joining;
 
+import io.marius.demo.ecommerce.account.api.payload.LoginPayload;
 import io.marius.demo.ecommerce.accountservice.entity.ShopUser;
-import io.marius.demo.ecommerce.accountservice.model.payload.LoginPayload;
 import io.marius.demo.ecommerce.accountservice.model.view.UserView;
 import io.marius.demo.ecommerce.accountservice.provider.RegisteredClientAuthProvider;
 import io.marius.demo.ecommerce.accountservice.security.enums.UserRole;

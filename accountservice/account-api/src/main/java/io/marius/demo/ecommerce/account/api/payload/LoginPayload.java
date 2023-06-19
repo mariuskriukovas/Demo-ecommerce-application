@@ -1,4 +1,4 @@
-package io.marius.demo.ecommerce.accountservice.model.payload;
+package io.marius.demo.ecommerce.account.api.payload;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
