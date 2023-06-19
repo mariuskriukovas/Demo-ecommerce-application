@@ -1,0 +1,76 @@
+# Schema
+type FileView{
+    id: Int!
+    fileName: String!
+    key: String!
+    s3Url: String!
+}
+
+type ProductCategory{
+    id: Int!
+    name: String!
+}
+
+type ProductView{
+    id: Int!
+    name: String!
+    price: Float
+    description: String
+    productCategory: ProductCategory
+    properties: [ProductProperty]
+    productFiles: [FileView]
+}
+
+type ProductProperty{
+    id: Int!
+    name: String!
+    description: String!
+    product: ProductView
+}
+
+type InventoryItem{
+    id: Int!
+    quantity: String!
+    product: ProductView
+}
+
+# Filters
+
+input PropertyFilter {
+    name: String
+    description: String
+}
+
+input PageablePayload{
+    page: Int,
+    itemsPerPage: Int,
+    sortBy: [String],
+    sortDesc: [Boolean],
+    groupBy: [String],
+    groupDesc: [Boolean],
+    multiSort: Boolean,
+    mustSort: Boolean
+}
+
+input ProductFilter {
+    name: String
+    description: String
+    category: String
+    priceFrom: Float
+    priceTo: Float
+    properties: [PropertyFilter],
+    pageable: PageablePayload
+}
+
+input InventoryItemsFilter {
+    quantityFrom: Int
+    quantityTo: Int
+    productFilter: ProductFilter
+}
+
+type Query{
+    product(id:Int!): ProductView
+    allProducts(filter: ProductFilter!): [ProductView]
+    allInventoryItems(filter: InventoryItemsFilter!): [InventoryItem]
+    allPublicProducts(searchBox: String!, pageable: PageablePayload): [ProductView]
+}

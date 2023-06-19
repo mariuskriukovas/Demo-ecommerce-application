@@ -1,0 +1,76 @@
+aws:
+  credentials:
+    accessKey: xxx
+    secretKey: xxx
+  s3:
+    zone: xxx
+    bucket:
+      name: xxx
+
+services:
+  account:
+    url: localhost:9000
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: inventory-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://account-service:9000
+
+  flyway:
+    enabled: 'true'
+    baseline-on-migrate: 'true'
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    url: ${spring.datasource.url}
+    schemas: inventory
+  datasource:
+    hikari:
+      max-lifetime: 600000
+      idle-timeout: 600000
+    driverClassName: org.postgresql.Driver
+    password: inventory_x
+    username: inventory_x
+    url: xxx
+  elasticsearch:
+    username: spring_user
+    password: spring_user123
+    hostname: localhost
+    port: 9200
+    scheme: https
+    ssl: false
+  h2:
+    console:
+      path: /h2-console
+      enabled: 'true'
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: 'true'
+    properties:
+      hibernate:
+        default_schema: inventory
+  graphql:
+    graphiql:
+      enabled: true
+  servlet:
+    multipart:
+      max-request-size: 5MB
+      max-file-size: 5MB
+      enabled: true
+server:
+  servlet:
+    context-path: /api
+  port: '9001'
+logging:
+  level:
+    org:
+      hibernate: ERROR
+      springframework:
+        web: DEBUG
+        security: DEBUG
