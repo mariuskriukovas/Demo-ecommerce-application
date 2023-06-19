@@ -5,6 +5,8 @@ import static java.util.stream.Collectors.joining;
 import io.marius.demo.ecommerce.accountservice.entity.ShopUser;
 import io.marius.demo.ecommerce.accountservice.model.payload.LoginPayload;
 import io.marius.demo.ecommerce.accountservice.model.view.UserView;
+import io.marius.demo.ecommerce.accountservice.provider.RegisteredClientAuthProvider;
+import io.marius.demo.ecommerce.accountservice.security.enums.UserRole;
 import java.time.Instant;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("AuthorizationService")
 public class AuthorizationService {
   private final AuthenticationManager authenticationManager;
+  private final RegisteredClientAuthProvider registeredClientAuthProvider;
   private final JwtEncoder jwtEncoder;
 
   @Value("${jwt.claims.custom.issuer}")
@@ -33,8 +36,12 @@ public class AuthorizationService {
   @Value("${jwt.claims.custom.expiry}")
   private String jwtExpiry;
 
-  public AuthorizationService(AuthenticationManager authenticationManager, JwtEncoder jwtEncoder) {
+  public AuthorizationService(
+      AuthenticationManager authenticationManager,
+      RegisteredClientAuthProvider registeredClientAuthProvider,
+      JwtEncoder jwtEncoder) {
     this.authenticationManager = authenticationManager;
+    this.registeredClientAuthProvider = registeredClientAuthProvider;
     this.jwtEncoder = jwtEncoder;
   }
 
@@ -60,6 +67,24 @@ public class AuthorizationService {
     }
   }
 
+  @Transactional(readOnly = true)
+  public ResponseEntity<Void> authorize(LoginPayload payload) {
+    try {
+      Authentication authentication =
+          registeredClientAuthProvider.authenticate(
+              new UsernamePasswordAuthenticationToken(
+                  payload.getUsername(), payload.getPassword()));
+
+      return ResponseEntity.ok()
+          .header(
+              HttpHeaders.AUTHORIZATION,
+              buildJwtTokenFromUsernamePasswordAuthenticationToken(authentication))
+          .build();
+    } catch (BadCredentialsException ex) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+  }
+
   private String buildJwtToken(Authentication authentication) {
     ShopUser user = (ShopUser) authentication.getPrincipal();
 
@@ -78,6 +103,26 @@ public class AuthorizationService {
             .expiresAt(now.plusSeconds(expiry))
             .subject(user.getUid())
             .claim("roles", scope)
+            .build();
+
+    return String.format(
+        "%s %s",
+        "Bearer", this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue());
+  }
+
+  private String buildJwtTokenFromUsernamePasswordAuthenticationToken(
+      Authentication authentication) {
+    UsernamePasswordAuthenticationToken token =
+        (UsernamePasswordAuthenticationToken) authentication;
+
+    Instant now = Instant.now();
+    JwtClaimsSet claims =
+        JwtClaimsSet.builder()
+            .issuer(jwtIssuer)
+            .issuedAt(now)
+            .expiresAt(now.plusSeconds(Long.parseLong(jwtExpiry)))
+            .subject(token.getName())
+            .claim("roles", UserRole.USER.getValue())
             .build();
 
     return String.format(
