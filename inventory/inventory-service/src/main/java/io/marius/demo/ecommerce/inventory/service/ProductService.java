@@ -5,6 +5,7 @@ import static io.marius.demo.ecommerce.inventory.utility.FieldUtility.isFieldVal
 import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.marius.demo.ecommerce.inventory.elastic.entity.ProductIndex;
 import io.marius.demo.ecommerce.inventory.elastic.repository.ProductIndexRepository;
 import io.marius.demo.ecommerce.inventory.entity.*;
 import io.marius.demo.ecommerce.inventory.mapper.ProductIndexMapper;
@@ -21,7 +22,7 @@ import jakarta.validation.ValidationException;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -117,16 +118,24 @@ public class ProductService {
     return query.fetch().stream().map(productMapper::toProductView).collect(Collectors.toList());
   }
 
-  public List<ProductView> findAllPublicProducts(String searchBox, Pageable pageable) {
+  public Page<ProductView> findAllPublicProducts(String searchBox, Pageable pageable) {
     if (searchBox == null || searchBox.isBlank()) {
-      return StreamSupport.stream(productIndexRepository.findAll(pageable).spliterator(), true)
-          .map(productIndexMapper::toProductView)
-          .collect(Collectors.toList());
+      return productIndexRepository.findAll(pageable).map(productIndexMapper::toProductView);
     }
 
-    return productIndexRepository.findAllBySearchBox(searchBox, pageable).stream()
-        .map(productIndexMapper::toProductView)
-        .collect(Collectors.toList());
+    return productIndexRepository
+        .findAllBySearchBox(searchBox, pageable)
+        .map(productIndexMapper::toProductView);
+  }
+
+  public ProductView findPublicProduct(String uid) {
+    return productIndexMapper.toProductView(findProductIndexByUid(uid));
+  }
+
+  private ProductIndex findProductIndexByUid(String uid) {
+    return productIndexRepository
+        .findById(uid)
+        .orElseThrow(() -> new ValidationException("Product not found !"));
   }
 
   private Product findProductById(Long id) {

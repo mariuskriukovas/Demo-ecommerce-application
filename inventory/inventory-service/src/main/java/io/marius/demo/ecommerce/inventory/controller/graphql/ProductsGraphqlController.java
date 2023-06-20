@@ -5,6 +5,7 @@ import io.marius.demo.ecommerce.inventory.model.query.ProductFilter;
 import io.marius.demo.ecommerce.inventory.model.view.ProductView;
 import io.marius.demo.ecommerce.inventory.service.ProductService;
 import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
@@ -22,13 +23,18 @@ public class ProductsGraphqlController {
     return productService.findProduct(id);
   }
 
+  @QueryMapping(value = "publicProduct")
+  public ProductView getPublicProduct(@Argument(name = "uid") String uid) {
+    return productService.findPublicProduct(uid);
+  }
+
   @QueryMapping(value = "allProducts")
   public List<ProductView> getAllProducts(@Argument(name = "filter") ProductFilter filter) {
     return productService.findAllProducts(filter);
   }
 
   @QueryMapping(value = "allPublicProducts")
-  public List<ProductView> getAllPublicProducts(
+  public Page<ProductView> getAllPublicProducts(
       @Argument(name = "searchBox") String searchBox,
       @Argument(name = "pageable") PageablePayload pageable) {
     return productService.findAllPublicProducts(searchBox, pageable);

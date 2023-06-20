@@ -1,5 +1,6 @@
 package io.marius.demo.ecommerce.inventory.elastic.entity;
 
+import io.marius.demo.ecommerce.common.api.view.ClassifierView;
 import io.marius.demo.ecommerce.inventory.api.entity.*;
 import java.util.List;
 import org.springframework.data.annotation.Id;
@@ -10,6 +11,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 public class ProductIndex implements BaseProduct {
   private List<InnerProductProperty> properties;
   private String name;
+  private ClassifierView category;
   private Double price;
   private String description;
   private List<InnerProductFile> files;
@@ -17,6 +19,14 @@ public class ProductIndex implements BaseProduct {
   @Id
   @Field(name = "uid")
   private String uid;
+
+  public ClassifierView getCategory() {
+    return category;
+  }
+
+  public void setCategory(ClassifierView category) {
+    this.category = category;
+  }
 
   @Override
   public String getName() {

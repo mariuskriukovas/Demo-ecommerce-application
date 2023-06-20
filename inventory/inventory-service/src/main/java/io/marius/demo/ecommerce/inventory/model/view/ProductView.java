@@ -5,12 +5,21 @@ import java.util.List;
 
 public class ProductView {
   private Long id;
+  private String uid;
   private String name;
   private Double price;
   private String description;
   private ClassifierView productCategory;
   private List<ClassifierView> properties;
   private List<FileView> productFiles;
+
+  public String getUid() {
+    return uid;
+  }
+
+  public void setUid(String uid) {
+    this.uid = uid;
+  }
 
   public List<ClassifierView> getProperties() {
     return properties;

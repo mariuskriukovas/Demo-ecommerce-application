@@ -1,7 +1,7 @@
 package io.marius.demo.ecommerce.inventory.model.query;
 
-import java.awt.print.Pageable;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public class ProductFilter {
   String name;
