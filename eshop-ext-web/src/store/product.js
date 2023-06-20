@@ -9,6 +9,10 @@ export const useProductStore = defineStore('product', {
       }, newProduct: {
         name: null, description: null, productCategory: null, price: null, properties: [],
       }, isCreateProductModalVisible: false,
+    }, publicProduct: {
+      filter: "", pagination: {
+        itemsPerPage: 10, page: 1,
+      },
     },
   }), getters: {}, actions: {
     async findProducts() {
@@ -20,6 +24,10 @@ export const useProductStore = defineStore('product', {
       this.product.isCreateProductModalVisible = false
     }, async createProduct(files = []) {
       return await ProductApi.createProduct({...this.product.newProduct, files})
+    }, getPagination() {
+      const pagination = {...this.publicProduct.pagination}
+      pagination.page = pagination?.page - 1
+      return pagination
     },
   }, persist: {
     enabled: true

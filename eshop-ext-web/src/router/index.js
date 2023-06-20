@@ -5,6 +5,7 @@ import Login from "@/views/Login.vue";
 import {useAppStore} from '@/store/app'
 import ProductList from "@/views/tabs/product/ProductList.vue";
 import ProductView from "@/views/tabs/product/ProductView.vue";
+import PublicProductView from "@/views/tabs/public/PublicProductView.vue";
 import SignUp from "@/views/SignUp.vue";
 import PublicProductList from "@/views/tabs/public/PublicProductList.vue";
 
@@ -14,6 +15,7 @@ export const INVENTORY_TAB_ROUTE_NAME = Inventory.name
 export const PRODUCT_TAB_ROUTE_NAME = ProductList.name
 export const PUBLIC_PRODUCT_TAB_ROUTE_NAME = PublicProductList.name
 export const PRODUCT_VIEW_ROUTE_NAME = ProductView.name
+export const PUBLIC_PRODUCT_VIEW_ROUTE_NAME = PublicProductView.name
 export const SIGN_UP_ROUTE_NAME = SignUp.name
 
 
@@ -31,8 +33,10 @@ const routes = [{
       path: "public-products", name: PUBLIC_PRODUCT_TAB_ROUTE_NAME, component: PublicProductList,
     },]
   }, {
-    path: "/products/:id/:mode?", name: PRODUCT_VIEW_ROUTE_NAME, component: ProductView
-  }],
+    path: "/products/:id/:mode?", name: PRODUCT_VIEW_ROUTE_NAME, component: ProductView,
+  }, {
+    path: "/public-products/:uid", name: PUBLIC_PRODUCT_VIEW_ROUTE_NAME, component: PublicProductView,
+  },],
 },]
 
 const router = createRouter({

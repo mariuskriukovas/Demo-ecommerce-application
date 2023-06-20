@@ -2,7 +2,7 @@
   <v-card class="mt-2 ml-2 mr-2 mb-2" color="primary" title="Filters" variant="outlined">
     <v-row class="ml-2 mr-2">
       <v-col>
-        <v-text-field v-model="filter" class="text-black" clearable label="Search"
+        <v-text-field v-model="publicProduct.filter" class="text-black" clearable label="Search"
                       variant="underlined"></v-text-field>
       </v-col>
     </v-row>
@@ -16,11 +16,10 @@
   </v-card>
   <v-card class="mt-2 ml-2 mr-2 mb-2" color="primary" title="Products" variant="outlined">
     <v-data-table
-      v-model:options="pagination"
       :expanded="expanded"
       :headers="headers"
       :items="items"
-      :items-per-page="itemsPerPage"
+      :items-per-page="publicProduct.pagination.itemsPerPage"
       class="elevation-1 primary"
       show-expand
     >
@@ -52,7 +51,7 @@
         ></v-icon>
       </template>
       <template v-slot:bottom>
-        <v-pagination v-model="pagination.page" :length="pageCount" :total-visible="totalVisible"
+        <v-pagination v-model="publicProduct.pagination.page" :length="pageCount" :total-visible="totalVisible"
                       @click="findProductsByFilter"></v-pagination>
       </template>
     </v-data-table>
@@ -62,20 +61,20 @@
 <script>
 import {mdiAccount,} from '@mdi/js'
 import {DEFAULT_IMAGE_URL} from "@/utils/imageUtil";
-import router, {PRODUCT_VIEW_ROUTE_NAME} from "@/router";
+import router, {PUBLIC_PRODUCT_VIEW_ROUTE_NAME} from "@/router";
 import ProductApi from "@/services/ProductApi";
+import {mapActions, mapState} from "pinia";
+import {useProductStore} from "@/store/product";
 
 export default {
   name: 'PublicProductList',
-  computed: {},
+  computed: {
+    ...mapState(useProductStore, ['publicProduct']),
+  },
   data() {
     return {
       icons: {
         mdiAccount,
-      },
-      filter: "",
-      pagination: {
-        page: 1,
       },
       expanded: [],
       pageCount: 1,
@@ -110,20 +109,15 @@ export default {
     await this.findProductsByFilter()
   },
   methods: {
+    ...mapActions(useProductStore, ['getPagination']),
     async onSearch() {
-      this.pagination.page = 1
+      this.publicProduct.pagination.page = 1
       await this.findProductsByFilter()
     },
     async findProductsByFilter() {
-      const data = (await ProductApi.getPublicProductsByFilter(this.filter, this.getPagination()))?.data?.allPublicProducts
+      const data = (await ProductApi.getPublicProductsByFilter(this.publicProduct.filter, this.getPagination()))?.data?.allPublicProducts
       this.items = data?.content
       this.pageCount = data?.totalPages
-    },
-    getPagination() {
-      // fixme later with new release
-      const pagination = {...this.pagination}
-      pagination.page = pagination?.page - 1
-      return pagination
     },
     getProperties(item) {
       return item?.raw?.properties ?? []
@@ -132,7 +126,7 @@ export default {
       return item?.raw?.productCategory?.name ?? ""
     },
     async navigateToView(item) {
-      await router.push({name: PRODUCT_VIEW_ROUTE_NAME, params: {id: item?.value}})
+      await router.push({name: PUBLIC_PRODUCT_VIEW_ROUTE_NAME, params: {uid: item?.value?.uid}})
     },
     getItemSource(item) {
       const files = item?.raw?.productFiles

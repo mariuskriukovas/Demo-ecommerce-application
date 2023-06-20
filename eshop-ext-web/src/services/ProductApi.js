@@ -36,7 +36,7 @@ export default {
         searchBox: {
           name: "searchBox", type: "String!", value: filter,
         }, pageable: {
-          name: "pageable", type: "PageablePayload", value: pageable,
+          name: "pageable", type: "Pageable", value: pageable,
         }
       },
     },]);
@@ -51,6 +51,20 @@ export default {
       }], variables: {
         id: {
           name: "id", type: "Int!", value: id,
+        },
+      },
+    },]);
+    return (await api.post("graphql", query))?.data
+  }, async getPublicProductByUid(uid) {
+
+    const query = gql.query([{
+      operation: "publicProduct", fields: ["uid", "name", "price", "description", {
+        productCategory: ["uid", "name"],
+        properties: ["uid", "name", "description"],
+        productFiles: ["key", "fileName", "s3Url"],
+      }], variables: {
+        uid: {
+          name: "uid", type: "String!", value: uid,
         },
       },
     },]);
