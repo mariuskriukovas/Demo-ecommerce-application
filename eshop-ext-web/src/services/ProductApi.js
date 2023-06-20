@@ -24,6 +24,23 @@ export default {
       },
     },]);
     return (await api.post("graphql", query))?.data
+  }, async getPublicProductsByFilter(filter, pageable) {
+    const query = gql.query([{
+      operation: "allPublicProducts", fields: ["first", "last", "totalPages", "totalElements", {
+        content: ["uid", "name", "price", "description", {
+          productCategory: ["uid", "name"],
+          properties: ["uid", "name", "description"],
+          productFiles: ["key", "fileName", "s3Url"],
+        }]
+      }], variables: {
+        searchBox: {
+          name: "searchBox", type: "String!", value: filter,
+        }, pageable: {
+          name: "pageable", type: "PageablePayload", value: pageable,
+        }
+      },
+    },]);
+    return (await api.post("graphql", query))?.data
   }, async getProductById(id) {
 
     const query = gql.query([{
