@@ -10,9 +10,9 @@
     </parent>
 
     <groupId>io.marius.demo.ecommerce.commons</groupId>
-    <artifactId>persistence</artifactId>
+    <artifactId>security</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>commons-persistence</name>
+    <name>commons-security</name>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -22,14 +22,26 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.marius.demo.ecommerce.commons</groupId>
-            <artifactId>api</artifactId>
+            <groupId>io.marius.demo.ecommerce</groupId>
+            <artifactId>account-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>4.0.3</version>
+        </dependency>
+        <!-- Todo add version numeber -->
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
     </dependencies>
 
