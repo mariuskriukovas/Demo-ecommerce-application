@@ -31,6 +31,7 @@ export default {
       tabs: [
         {id: 0, name: "Inventory", route: `/home/inventory-items`}, // Todo use named path
         {id: 1, name: "Products", route: `/home/products`},
+        {id: 2, name: "Public Products", route: `/home/public-products`},
       ]
     };
   }

@@ -2,7 +2,7 @@ import ApiInterceptor from "@/plugins/api/ApiInterceptor";
 import * as gql from 'gql-query-builder'
 import {omitBy} from "lodash";
 
-const api = ApiInterceptor("inventory");
+const api = ApiInterceptor("api/inventory");
 
 export default {
   async getByQuery(query) {
@@ -24,6 +24,23 @@ export default {
       },
     },]);
     return (await api.post("graphql", query))?.data
+  }, async getPublicProductsByFilter(filter, pageable) {
+    const query = gql.query([{
+      operation: "allPublicProducts", fields: ["first", "last", "totalPages", "totalElements", {
+        content: ["uid", "name", "price", "description", {
+          productCategory: ["uid", "name"],
+          properties: ["uid", "name", "description"],
+          productFiles: ["key", "fileName", "s3Url"],
+        }]
+      }], variables: {
+        searchBox: {
+          name: "searchBox", type: "String!", value: filter,
+        }, pageable: {
+          name: "pageable", type: "Pageable", value: pageable,
+        }
+      },
+    },]);
+    return (await api.post("graphql", query))?.data
   }, async getProductById(id) {
 
     const query = gql.query([{
@@ -34,6 +51,20 @@ export default {
       }], variables: {
         id: {
           name: "id", type: "Int!", value: id,
+        },
+      },
+    },]);
+    return (await api.post("graphql", query))?.data
+  }, async getPublicProductByUid(uid) {
+
+    const query = gql.query([{
+      operation: "publicProduct", fields: ["uid", "name", "price", "description", {
+        productCategory: ["uid", "name"],
+        properties: ["uid", "name", "description"],
+        productFiles: ["key", "fileName", "s3Url"],
+      }], variables: {
+        uid: {
+          name: "uid", type: "String!", value: uid,
         },
       },
     },]);

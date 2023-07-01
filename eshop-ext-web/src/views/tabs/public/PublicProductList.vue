@@ -1,32 +1,8 @@
 <template>
   <v-card class="mt-2 ml-2 mr-2 mb-2" color="primary" title="Filters" variant="outlined">
     <v-row class="ml-2 mr-2">
-      <v-col cols="6">
-        <v-text-field v-model="product.filter.name" class="text-black" clearable label="Name"
-                      variant="underlined"></v-text-field>
-      </v-col>
-      <v-col cols="6">
-        <v-text-field v-model="product.filter.category" class="text-black" clearable label="Product Category"
-                      variant="underlined"></v-text-field>
-      </v-col>
-    </v-row>
-    <v-row class="ml-2 mr-2">
-      <v-col cols="6">
-        <v-text-field v-model="product.filter.properties" class="text-black" clearable disabled
-                      label="Properties" variant="underlined"></v-text-field>
-      </v-col>
-      <v-col cols="3">
-        <v-text-field v-model="product.filter.priceFrom" class="text-black" clearable label="Price From"
-                      type="number" variant="underlined"></v-text-field>
-      </v-col>
-      <v-col cols="3">
-        <v-text-field v-model="product.filter.priceTo" class="text-black" clearable label="Price To"
-                      type="number" variant="underlined"></v-text-field>
-      </v-col>
-    </v-row>
-    <v-row class="ml-2 mr-2">
       <v-col>
-        <v-text-field v-model="product.filter.description" class="text-black" clearable label="Description"
+        <v-text-field v-model="publicProduct.filter" class="text-black" clearable label="Search"
                       variant="underlined"></v-text-field>
       </v-col>
     </v-row>
@@ -39,18 +15,11 @@
     </v-row>
   </v-card>
   <v-card class="mt-2 ml-2 mr-2 mb-2" color="primary" title="Products" variant="outlined">
-    <v-row v-if="isAdmin" class="ml-2 mr-2 mb-2">
-      <v-col class="text-right">
-        <v-btn class="text-right" color="primary" outlined @click="onCreate">
-          Create new product
-        </v-btn>
-      </v-col>
-    </v-row>
     <v-data-table
       :expanded="expanded"
       :headers="headers"
       :items="items"
-      :items-per-page="itemsPerPage"
+      :items-per-page="publicProduct.pagination.itemsPerPage"
       class="elevation-1 primary"
       show-expand
     >
@@ -80,38 +49,27 @@
           size="large"
           @click="navigateToView(item)"
         ></v-icon>
-        <v-icon
-          v-if="isAdmin"
-          class="ml-4"
-          color="red-darken-2"
-          icon="mdi-pencil"
-          size="large"
-          @click="navigateToEdit(item)"
-        ></v-icon>
+      </template>
+      <template v-slot:bottom>
+        <v-pagination v-model="publicProduct.pagination.page" :length="pageCount" :total-visible="totalVisible"
+                      @click="findProductsByFilter"></v-pagination>
       </template>
     </v-data-table>
   </v-card>
-  <ProductCreate></ProductCreate>
 </template>
 
 <script>
-import {useProductStore} from "@/store/product";
-import {mapActions, mapState} from "pinia";
-import ProductCreate from "@/views/tabs/product/ProductCreate.vue";
 import {mdiAccount,} from '@mdi/js'
 import {DEFAULT_IMAGE_URL} from "@/utils/imageUtil";
-import router, {PRODUCT_VIEW_ROUTE_NAME} from "@/router";
-import {useAppStore} from "@/store/app";
+import router, {PUBLIC_PRODUCT_VIEW_ROUTE_NAME} from "@/router";
+import ProductApi from "@/services/ProductApi";
+import {mapActions, mapState} from "pinia";
+import {useProductStore} from "@/store/product";
 
 export default {
-  name: 'ProductList',
-  components: {ProductCreate},
+  name: 'PublicProductList',
   computed: {
-    ...mapState(useProductStore, ['product']),
-    ...mapState(useAppStore, ['hasRole']),
-    isAdmin() {
-      return this.hasRole("ADMIN")
-    },
+    ...mapState(useProductStore, ['publicProduct']),
   },
   data() {
     return {
@@ -119,7 +77,9 @@ export default {
         mdiAccount,
       },
       expanded: [],
+      pageCount: 1,
       itemsPerPage: 10,
+      totalVisible: 6,
       headers: [
         {
           title: 'Name',
@@ -142,20 +102,22 @@ export default {
         },
         {title: 'Description', align: 'end', key: 'description'},
       ],
-      // not seeing purpose of persisting items
       items: [],
     };
   },
   async mounted() {
-    await this.onSearch()
+    await this.findProductsByFilter()
   },
   methods: {
-    ...mapActions(useProductStore, ['findProducts', 'openCreateProductModal']),
+    ...mapActions(useProductStore, ['getPagination']),
     async onSearch() {
-      this.items = await this.findProducts()
+      this.publicProduct.pagination.page = 1
+      await this.findProductsByFilter()
     },
-    onCreate() {
-      this.openCreateProductModal()
+    async findProductsByFilter() {
+      const data = (await ProductApi.getPublicProductsByFilter(this.publicProduct.filter, this.getPagination()))?.data?.allPublicProducts
+      this.items = data?.content
+      this.pageCount = data?.totalPages
     },
     getProperties(item) {
       return item?.raw?.properties ?? []
@@ -164,10 +126,7 @@ export default {
       return item?.raw?.productCategory?.name ?? ""
     },
     async navigateToView(item) {
-      await router.push({name: PRODUCT_VIEW_ROUTE_NAME, params: {id: item?.value}})
-    },
-    async navigateToEdit(item) {
-      await router.push({name: PRODUCT_VIEW_ROUTE_NAME, params: {id: item?.value, mode: 'edit'}})
+      await router.push({name: PUBLIC_PRODUCT_VIEW_ROUTE_NAME, params: {uid: item?.value?.uid}})
     },
     getItemSource(item) {
       const files = item?.raw?.productFiles
