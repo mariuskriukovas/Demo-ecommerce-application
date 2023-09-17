@@ -1,35 +1,18 @@
-FROM node:lts as builder
+FROM node:lts-alpine as build-stage
 
 WORKDIR /app
 
-ENV NODE_OPTIONS=--openssl-legacy-provider
+COPY package*.json ./
 
+RUN npm install
 COPY . .
+RUN npm run build
 
-RUN yarn install \
-  --prefer-offline \
-  --frozen-lockfile \
-  --non-interactive \
-  --production=false
-
-RUN yarn build
-
-RUN rm -rf node_modules && \
-  NODE_ENV=production yarn install \
-  --prefer-offline \
-  --pure-lockfile \
-  --non-interactive \
-  --production=true
-
-FROM node:lts
-
-WORKDIR /app
-
-COPY --from=builder /app  .
+FROM nginx:stable-alpine-perl as production-stage
+COPY nginx/ /etc/nginx/
+COPY --from=build-stage /app/dist /usr/share/nginx/html
 
 ENV GATEWAY_SERVICE_URL GATEWAY_SERVICE_URL
 
-ENV HOST 0.0.0.0
-EXPOSE 3000
-
-CMD [ "yarn", "start" ]
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
